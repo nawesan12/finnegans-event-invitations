@@ -31,19 +31,3 @@ body {
 .text-shadow {
     text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
-
-/* Custom border style for initial buttons */
-.btn-custom-border {
-    position: relative;
-}
-.btn-custom-border::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    height: 50%; /* Adjust height of the border element */
-    width: 2px;
-    background-color: white;
-    border-radius: 1px;
-}

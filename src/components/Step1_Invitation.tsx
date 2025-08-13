@@ -9,7 +9,7 @@ export default function Step1_Invitation({
   onNo: () => void;
 }) {
   return (
-    <div className="flex flex-col -gap-4">
+    <div className="flex flex-col gap-2">
       <div className="inline-flex max-w-max items-center gap-2 py-2 px-5 rounded-full text-base font-medium mb-8 bg-white/20 backdrop-blur-md border border-white/30 text-white">
         <Image
           src="/finnegans.svg"
@@ -20,7 +20,7 @@ export default function Step1_Invitation({
         />
         <span></span>
       </div>
-      <h1 className="text-6xl sm:text-6xl md:text-8xl font-semibold text-white mb-10 text-shadow shadow-sm w-full">
+      <h1 className="text-6xl sm:text-6xl md:text-8xl font-semibold text-white mb-10 text-shadow w-full">
         Comienza una <br /> nueva era ¿venís?
       </h1>
       <div className="flex flex-wrap justify-center md:justify-start gap-5">

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_6" data-name="Layer 6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128.93 128.93">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #4bc3ff;
+        stroke: #4bc3ff;
+        stroke-miterlimit: 10;
+        stroke-width: 15.38px;
+      }
+
+      .cls-2 {
+        fill: none;
+        stroke: #04102d;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 3.7px;
+      }
+    </style>
+  </defs>
+  <rect class="cls-1" x="34.96" y="37.51" width="61.63" height="60.35" rx="30.17" ry="30.17"/>
+  <rect class="cls-2" x="34.96" y="37.51" width="61.63" height="60.35" rx="30.17" ry="30.17"/>
+  <polyline class="cls-2" points="65.77 52.09 65.77 69.31 80.5 69.31"/>
+</svg>

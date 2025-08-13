@@ -2,7 +2,7 @@
 import { FormEvent, useState } from "react";
 
 export default function Step2_Form({ onSubmit }: { onSubmit: () => void }) {
-  const [hasAllergy, setHasAllergy] = useState<string | null>(null); // null, 'yes', or 'no'
+  const [hasAllergy, setHasAllergy] = useState<string | null>(null);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -101,31 +101,27 @@ export default function Step2_Form({ onSubmit }: { onSubmit: () => void }) {
               ))}
             </div>
           </div>
-          {/* Dietary Options (conditionally rendered) */}
-          {hasAllergy === "yes" && (
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {["Vegetariana", "Gluten Free", "Vegana", "Otra"].map(
-                  (diet) => (
-                    <label
-                      key={diet}
-                      className="flex items-center gap-3 cursor-pointer p-3 rounded-full bg-white/20 backdrop-blur-md border border-white/30 transition-all hover:bg-white/30"
-                    >
-                      <input
-                        type="radio"
-                        name="diet"
-                        value={diet.toLowerCase().replace(" ", "-")}
-                        className="w-5 h-5 appearance-none rounded-full border border-white/50 bg-white/20 backdrop-blur-md checked:bg-cyan-500 checked:border-cyan-400 transition-all cursor-pointer"
-                      />
-                      <span className="text-white font-semibold select-none">
-                        {diet}
-                      </span>
-                    </label>
-                  ),
-                )}
-              </div>
+
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {["Vegetariana", "Gluten Free", "Vegana", "Otra"].map((diet) => (
+                <label
+                  key={diet}
+                  className="flex items-center gap-3 cursor-pointer p-3 rounded-full bg-white/20 backdrop-blur-md border border-white/30 transition-all hover:bg-white/30"
+                >
+                  <input
+                    type="radio"
+                    name="diet"
+                    value={diet.toLowerCase().replace(" ", "-")}
+                    className="w-5 h-5 appearance-none rounded-full border border-white/50 bg-white/20 backdrop-blur-md checked:bg-cyan-500 checked:border-cyan-400 transition-all cursor-pointer"
+                  />
+                  <span className="text-white font-semibold select-none">
+                    {diet}
+                  </span>
+                </label>
+              ))}
             </div>
-          )}
+          </div>
 
           <div className="flex justify-end pt-8 absolute -bottom-10 right-10">
             <button

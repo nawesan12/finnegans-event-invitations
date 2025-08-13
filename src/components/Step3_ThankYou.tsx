@@ -42,16 +42,14 @@ export default function Step3_ThankYou() {
       </div>
       {/* Footer */}
       <div className="flex flex-col sm:flex-row justify-between items-center w-full gap-4">
-        <div className="flex items-center gap-3 text-white text-2xl font-semibold">
-          <Image
-            src="/finnegans-2.svg"
-            alt="Finnegans Logo"
-            width={56}
-            height={56}
-            className="rounded-full"
-          />
-        </div>
-        <p className="text-white/90 text-lg font-semibold text-center sm:text-right">
+        <Image
+          src="/finnegans-2.svg"
+          alt="Finnegans Logo"
+          width={400}
+          height={200}
+          className="aspect-auto h-16 mx-0 px-0 max-w-max"
+        />
+        <p className="text-white/90 text-lg font-semibold text-center sm:text-right whitespace-nowrap">
           Te acompañamos al futuro que{" "}
           <span className="italic font-cursive text-xl">imaginamos.</span>
         </p>
