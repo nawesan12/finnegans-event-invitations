@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
+  directUrl    = env("DIRECT_URL")
+  relationMode = "prisma"
+}
+
+// 2. Define an Enum for event status
+// Using an enum ensures that the status field can only contain these specific values.
+enum EventStatus {
+  UPCOMING
+  COMPLETED
+  PLANNING
+  CANCELED
+}
+
+// 3. Define the Event model
+// This model corresponds to a single event your company hosts.
+model Event {
+  id       Int         @id @default(autoincrement())
+  name     String
+  date     DateTime
+  location String
+  capacity Int
+  status   EventStatus @default(PLANNING)
+
+  // Relation: An event can have many attendees.
+  attendees Attendee[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// 4. Define the Attendee model
+// This model represents a person who has registered for an event.
+// The data fields directly correspond to your form and API route.
+model Attendee {
+  id           Int     @id @default(autoincrement())
+  name         String
+  email        String  @unique // Each attendee's email must be unique.
+  company      String
+  role         String
+  dietaryNeeds String? // The '?' makes this field optional.
+
+  // Relation: Each attendee belongs to one event.
+  event   Event @relation(fields: [eventId], references: [id])
+  eventId Int // Foreign key to link to the Event model.
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
