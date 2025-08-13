@@ -1,5 +1,6 @@
 "use client";
 
+import { PieChart } from "lucide-react";
 import Image from "next/image";
 import React, { useState, useEffect, useMemo } from "react";
 // In a real project, you would install and import from recharts
@@ -13,6 +14,8 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  Pie,
+  Cell,
 } from "recharts";
 
 // --- DEFINICIONES DE TIPOS (coinciden con el esquema de Prisma) ---
@@ -337,7 +340,12 @@ const Sidebar = ({
   return (
     <aside className="hidden md:flex flex-col w-64 bg-[#04102D] border-r border-white/10">
       <div className="h-16 flex items-center px-6">
-        <Image src="/finnegans.svg" alt="Logo" width={200} height={200} />
+        <Image
+          src="/finnegans-blanco.png"
+          alt="Logo"
+          width={200}
+          height={200}
+        />
       </div>
       <nav className="flex-1 px-4 py-6 space-y-2">
         {navItems.map((item) => (
@@ -490,10 +498,15 @@ const DashboardPage = ({
   const upcomingEventsCount = events.filter(
     (e) => e.status === "UPCOMING",
   ).length;
+
+  const dietaryNeedsCount = attendees.filter((a) => a.dietaryNeeds).length;
+
   return (
     <div className="p-6 space-y-6">
       <h2 className="text-3xl font-bold text-white">Panel de Control</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+      {/* Updated Stat Cards Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
         <StatCard
           title="Eventos Totales"
           value={events.length}
@@ -521,8 +534,34 @@ const DashboardPage = ({
           icon="barChart"
           isLoading={isLoading}
         />
+        {/* New Stat Card for Dietary Needs */}
+        <StatCard
+          title="Necesidades Dietéticas"
+          value={dietaryNeedsCount}
+          icon="edit" // Using edit icon as a placeholder
+          isLoading={isLoading}
+        />
       </div>
-      <RegistrationsChart attendees={attendees} isLoading={isLoading} />
+
+      {/* New section for charts and agenda */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2">
+          <RegistrationsChart attendees={attendees} isLoading={isLoading} />
+        </div>
+        <div>
+          <UpcomingEventsAgenda events={events} isLoading={isLoading} />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-1">
+          <EventStatusChart events={events} isLoading={isLoading} />
+        </div>
+        <div className="lg:col-span-2">
+          {/* You could add another component here in the future! */}
+          {/* For example, a table of "Top 5 Most Attended Events" */}
+        </div>
+      </div>
     </div>
   );
 };
@@ -538,6 +577,24 @@ const EventsPage = ({
   onEdit: (event: Event) => void;
   onDelete: (eventId: number) => void;
 }) => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [dateFilter, setDateFilter] = useState("");
+
+  const filteredEvents = useMemo(() => {
+    return events.filter((event) => {
+      const matchesSearch = event.name
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
+      const matchesStatus =
+        statusFilter === "all" || event.status === statusFilter;
+      const matchesDate =
+        !dateFilter ||
+        new Date(event.date).toISOString().slice(0, 10) === dateFilter;
+      return matchesSearch && matchesStatus && matchesDate;
+    });
+  }, [events, searchTerm, statusFilter, dateFilter]);
+
   const getStatusClass = (status: string) =>
     ({
       UPCOMING: "bg-[#4BC3FE]/20 text-[#4BC3FE]",
@@ -548,13 +605,39 @@ const EventsPage = ({
 
   return (
     <div className="p-6">
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col md:flex-row items-center justify-between mb-6 gap-4">
         <h2 className="text-3xl font-bold text-white">Eventos</h2>
-        {/*@ts-expect-error bla*/}
-        <Button onClick={() => onEdit(null)} className="gap-2 px-4 py-2">
-          <Icon name="plusCircle" className="w-5 h-5" />
-          Crear Evento
-        </Button>
+        <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
+          <input
+            type="text"
+            placeholder="Buscar por nombre..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full md:w-48 px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:ring-2 focus:ring-[#4BC3FE] outline-none"
+          />
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="w-full md:w-auto px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:ring-2 focus:ring-[#4BC3FE] outline-none"
+          >
+            <option value="all">Todos los Estados</option>
+            <option value="UPCOMING">Próximo</option>
+            <option value="COMPLETED">Completado</option>
+            <option value="PLANNING">Planeando</option>
+            <option value="CANCELED">Cancelado</option>
+          </select>
+          <input
+            type="date"
+            value={dateFilter}
+            onChange={(e) => setDateFilter(e.target.value)}
+            className="w-full md:w-auto px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:ring-2 focus:ring-[#4BC3FE] outline-none"
+          />
+          {/*@ts-expect-error bla*/}
+          <Button onClick={() => onEdit(null)} className="gap-2 px-4 py-2">
+            <Icon name="plusCircle" className="w-5 h-5" />
+            Crear Evento
+          </Button>
+        </div>
       </div>
       <Card>
         <div className="overflow-x-auto">
@@ -598,7 +681,7 @@ const EventsPage = ({
                   </tr>
                 ))}
               {!isLoading &&
-                events.map((event) => (
+                filteredEvents.map((event) => (
                   <tr
                     key={event.id}
                     className="border-b border-white/10 hover:bg-white/5"
@@ -658,32 +741,62 @@ const AttendeesPage = ({
   isLoading: boolean;
 }) => {
   const [selectedEventId, setSelectedEventId] = useState<string>("all");
-  const filteredAttendees = useMemo(
-    () =>
-      attendees.filter(
-        (a) =>
-          selectedEventId === "all" || a.eventId === parseInt(selectedEventId),
-      ),
-    [attendees, selectedEventId],
-  );
+  const [searchTerm, setSearchTerm] = useState("");
+  const [dietaryFilter, setDietaryFilter] = useState("all");
+
+  const filteredAttendees = useMemo(() => {
+    return attendees.filter((attendee) => {
+      const matchesEvent =
+        selectedEventId === "all" ||
+        attendee.eventId === parseInt(selectedEventId);
+      const matchesSearch =
+        searchTerm === "" ||
+        attendee.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        attendee.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        attendee.company.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesDietary =
+        dietaryFilter === "all" ||
+        (dietaryFilter === "yes" && attendee.dietaryNeeds) ||
+        (dietaryFilter === "no" && !attendee.dietaryNeeds);
+      return matchesEvent && matchesSearch && matchesDietary;
+    });
+  }, [attendees, selectedEventId, searchTerm, dietaryFilter]);
 
   return (
     <div className="p-6">
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col md:flex-row items-center justify-between mb-6 gap-4">
         <h2 className="text-3xl font-bold text-white">Asistentes</h2>
-        <select
-          value={selectedEventId}
-          onChange={(e) => setSelectedEventId(e.target.value)}
-          className="w-full md:w-64 px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:ring-2 focus:ring-[#4BC3FE] outline-none"
-          disabled={isLoading}
-        >
-          <option value="all">Todos los Eventos</option>
-          {events.map((event) => (
-            <option key={event.id} value={event.id}>
-              {event.name}
-            </option>
-          ))}
-        </select>
+        <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
+          <input
+            type="text"
+            placeholder="Buscar por nombre, email o empresa..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full md:w-64 px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:ring-2 focus:ring-[#4BC3FE] outline-none"
+          />
+          <select
+            value={selectedEventId}
+            onChange={(e) => setSelectedEventId(e.target.value)}
+            className="w-full md:w-auto px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:ring-2 focus:ring-[#4BC3FE] outline-none"
+            disabled={isLoading}
+          >
+            <option value="all">Todos los Eventos</option>
+            {events.map((event) => (
+              <option key={event.id} value={event.id}>
+                {event.name}
+              </option>
+            ))}
+          </select>
+          <select
+            value={dietaryFilter}
+            onChange={(e) => setDietaryFilter(e.target.value)}
+            className="w-full md:w-auto px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:ring-2 focus:ring-[#4BC3FE] outline-none"
+          >
+            <option value="all">Todas las Dietas</option>
+            <option value="yes">Con Necesidades Dietéticas</option>
+            <option value="no">Sin Necesidades Dietéticas</option>
+          </select>
+        </div>
       </div>
       <Card>
         <div className="overflow-x-auto">
@@ -788,8 +901,8 @@ export default function App() {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     // In a real application, you would fetch this from a secure backend.
-    const MOCK_USER = "admin";
-    const MOCK_PASS = "password123";
+    const MOCK_USER = "finnegansadmin";
+    const MOCK_PASS = "XLR8FN";
 
     if (username === MOCK_USER && password === MOCK_PASS) {
       setIsAuthenticated(true);
@@ -994,3 +1107,147 @@ export default function App() {
     </div>
   );
 }
+
+const EventStatusChart = ({
+  events,
+  isLoading,
+}: {
+  events: Event[];
+  isLoading: boolean;
+}) => {
+  const statusData = useMemo(() => {
+    if (!events || events.length === 0) return [];
+    const statusCounts = events.reduce((acc, event) => {
+      //@ts-expect-error bla
+      acc[event.status] = (acc[event.status] || 0) + 1;
+      return acc;
+    }, {});
+    return Object.entries(statusCounts).map(([name, value]) => ({
+      name,
+      value,
+    }));
+  }, [events]);
+
+  const COLORS = {
+    UPCOMING: "#4BC3FE",
+    COMPLETED: "#22c55e", // green-500
+    PLANNING: "#facc15", // yellow-400
+    CANCELED: "#ef4444", // red-500
+  };
+
+  if (isLoading) {
+    return (
+      <Card className="p-4 h-80 flex items-center justify-center">
+        <div className="animate-spin">
+          <Icon name="loader" />
+        </div>
+      </Card>
+    );
+  }
+
+  return (
+    <Card className="p-4">
+      <h3 className="text-lg font-semibold text-white mb-4">
+        Estado de Eventos
+      </h3>
+      <ResponsiveContainer width="100%" height={300}>
+        <PieChart>
+          <Pie
+            data={statusData}
+            cx="50%"
+            cy="50%"
+            innerRadius={60}
+            outerRadius={80}
+            fill="#8884d8"
+            paddingAngle={5}
+            dataKey="value"
+            label={(
+              { name, percent }, //@ts-expect-error bla
+            ) => `${name} ${(percent * 100).toFixed(0)}%`}
+          >
+            {statusData.map((entry, index) => (
+              <Cell
+                key={`cell-${index}`} //@ts-expect-error bla
+                fill={COLORS[entry.name as string] || "#8884d8"}
+              />
+            ))}
+          </Pie>
+          <Tooltip
+            contentStyle={{
+              backgroundColor: "#04102D",
+              border: "1px solid rgba(255, 255, 255, 0.2)",
+            }}
+          />
+        </PieChart>
+      </ResponsiveContainer>
+    </Card>
+  );
+};
+
+const UpcomingEventsAgenda = ({
+  events,
+  isLoading,
+}: {
+  events: Event[];
+  isLoading: boolean;
+}) => {
+  const upcomingEvents = useMemo(() => {
+    return events
+      .filter((event) => event.status === "UPCOMING")
+      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+      .slice(0, 5); // Show the next 5
+  }, [events]);
+
+  if (isLoading) {
+    return (
+      <Card className="p-4 h-80">
+        <div className="h-6 w-3/4 bg-white/10 rounded-md animate-pulse mb-4"></div>
+        <div className="space-y-3">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div
+              key={i}
+              className="h-10 bg-white/10 rounded-md animate-pulse"
+            ></div>
+          ))}
+        </div>
+      </Card>
+    );
+  }
+
+  return (
+    <Card className="p-4 h-full">
+      <h3 className="text-lg font-semibold text-white mb-4">
+        Próximos Eventos
+      </h3>
+      {upcomingEvents.length > 0 ? (
+        <ul className="space-y-4">
+          {upcomingEvents.map((event) => (
+            <li
+              key={event.id}
+              className="flex items-center gap-4 p-2 rounded-lg hover:bg-white/5 transition-colors"
+            >
+              <div className="flex-shrink-0 flex flex-col items-center justify-center w-12 h-12 bg-[#4BC3FE]/20 text-[#8694FF] rounded-lg">
+                <span className="text-xs font-bold uppercase">
+                  {new Date(event.date).toLocaleDateString("es-ES", {
+                    month: "short",
+                  })}
+                </span>
+                <span className="text-xl font-bold">
+                  {new Date(event.date).getDate()}
+                </span>
+              </div>
+              <div>
+                <p className="font-semibold text-white">{event.name}</p>
+                <p className="text-xs text-white/60">{event.location}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div className="flex items-center justify-center h-full text-white/50">
+          <p>No hay eventos próximos.</p>
+        </div>
+      )}
+    </Card>
+  );
+};
