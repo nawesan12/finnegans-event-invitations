@@ -372,7 +372,7 @@ const Header = () => (
         />
         <div>
           <p className="text-sm font-semibold text-white">Admin</p>
-          <p className="text-xs text-white/60">admin@eventflow.com</p>
+          <p className="text-xs text-white/60">Admin de eventos</p>
         </div>
       </div>
     </div>
