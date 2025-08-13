@@ -4,11 +4,30 @@ import { FormEvent, useState } from "react";
 export default function Step2_Form({ onSubmit }: { onSubmit: () => void }) {
   const [hasAllergy, setHasAllergy] = useState<string | null>(null);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Here you would typically handle form data submission (e.g., send to an API)
-    console.log("Form submitted!");
-    onSubmit(); // Move to the next step
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+      const response = await fetch("/api/atendees", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        console.log("Form submitted successfully!");
+        onSubmit(); // Move to the next step
+      } else {
+        console.error("Form submission failed.");
+        // Optionally, show an error message to the user
+      }
+    } catch (error) {
+      console.error("An error occurred during form submission:", error);
+    }
   };
 
   return (
