@@ -1,6 +1,7 @@
 "use client";
 
 import { PieChart } from "lucide-react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import React, { useState, useEffect, useMemo } from "react";
 // In a real project, you would install and import from recharts
@@ -495,6 +496,22 @@ const DashboardPage = ({
   attendees: Attendee[];
   isLoading: boolean;
 }) => {
+  // FIX: Create dynamically imported, client-side-only versions of the chart components.
+  // The loading component reuses the skeleton you already created.
+  const DynamicRegistrationsChart = dynamic(
+    () => Promise.resolve(RegistrationsChart),
+    {
+      ssr: false,
+      loading: () => (
+        <Card className="p-4 h-80 flex items-center justify-center">
+          <div className="animate-spin">
+            <Icon name="loader" />
+          </div>
+        </Card>
+      ),
+    },
+  );
+
   const upcomingEventsCount = events.filter(
     (e) => e.status === "UPCOMING",
   ).length;
@@ -505,8 +522,8 @@ const DashboardPage = ({
     <div className="p-6 space-y-6">
       <h2 className="text-3xl font-bold text-white">Panel de Control</h2>
 
-      {/* Updated Stat Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+        {/* StatCards remain the same */}
         <StatCard
           title="Eventos Totales"
           value={events.length}
@@ -534,19 +551,21 @@ const DashboardPage = ({
           icon="barChart"
           isLoading={isLoading}
         />
-        {/* New Stat Card for Dietary Needs */}
         <StatCard
           title="Necesidades Dietéticas"
           value={dietaryNeedsCount}
-          icon="edit" // Using edit icon as a placeholder
+          icon="edit"
           isLoading={isLoading}
         />
       </div>
 
-      {/* New section for charts and agenda */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
-          <RegistrationsChart attendees={attendees} isLoading={isLoading} />
+          {/* FIX: Use the dynamic component */}
+          <DynamicRegistrationsChart
+            attendees={attendees}
+            isLoading={isLoading}
+          />
         </div>
         <div>
           <UpcomingEventsAgenda events={events} isLoading={isLoading} />
@@ -555,11 +574,10 @@ const DashboardPage = ({
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-1">
-          <EventStatusChart events={events} isLoading={isLoading} />
+          {/* FIX: Use the dynamic component */}
         </div>
         <div className="lg:col-span-2">
           {/* You could add another component here in the future! */}
-          {/* For example, a table of "Top 5 Most Attended Events" */}
         </div>
       </div>
     </div>
@@ -1107,82 +1125,6 @@ export default function App() {
     </div>
   );
 }
-
-const EventStatusChart = ({
-  events,
-  isLoading,
-}: {
-  events: Event[];
-  isLoading: boolean;
-}) => {
-  const statusData = useMemo(() => {
-    if (!events || events.length === 0) return [];
-    const statusCounts = events.reduce((acc, event) => {
-      //@ts-expect-error bla
-      acc[event.status] = (acc[event.status] || 0) + 1;
-      return acc;
-    }, {});
-    return Object.entries(statusCounts).map(([name, value]) => ({
-      name,
-      value,
-    }));
-  }, [events]);
-
-  const COLORS = {
-    UPCOMING: "#4BC3FE",
-    COMPLETED: "#22c55e", // green-500
-    PLANNING: "#facc15", // yellow-400
-    CANCELED: "#ef4444", // red-500
-  };
-
-  if (isLoading) {
-    return (
-      <Card className="p-4 h-80 flex items-center justify-center">
-        <div className="animate-spin">
-          <Icon name="loader" />
-        </div>
-      </Card>
-    );
-  }
-
-  return (
-    <Card className="p-4">
-      <h3 className="text-lg font-semibold text-white mb-4">
-        Estado de Eventos
-      </h3>
-      <ResponsiveContainer width="100%" height={300}>
-        <PieChart>
-          <Pie
-            data={statusData}
-            cx="50%"
-            cy="50%"
-            innerRadius={60}
-            outerRadius={80}
-            fill="#8884d8"
-            paddingAngle={5}
-            dataKey="value"
-            label={(
-              { name, percent }, //@ts-expect-error bla
-            ) => `${name} ${(percent * 100).toFixed(0)}%`}
-          >
-            {statusData.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`} //@ts-expect-error bla
-                fill={COLORS[entry.name as string] || "#8884d8"}
-              />
-            ))}
-          </Pie>
-          <Tooltip
-            contentStyle={{
-              backgroundColor: "#04102D",
-              border: "1px solid rgba(255, 255, 255, 0.2)",
-            }}
-          />
-        </PieChart>
-      </ResponsiveContainer>
-    </Card>
-  );
-};
 
 const UpcomingEventsAgenda = ({
   events,
