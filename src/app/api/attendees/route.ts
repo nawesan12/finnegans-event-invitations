@@ -1,17 +1,15 @@
+import { db } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 interface Attendee {
-  id: number;
+  id: number | undefined;
   name: string;
   email: string;
-  empresa: string;
-  cargo: string;
-  diet: string | null;
+  company: string;
+  role: string;
+  dietaryNeeds: string | null;
+  eventId: number | undefined;
 }
-
-// In-memory database
-let attendees: Attendee[] = [];
-let nextId = 1;
 
 /**
  * Handles the GET request to fetch all attendees.
@@ -19,6 +17,8 @@ let nextId = 1;
  */
 export async function GET() {
   try {
+    const attendees: Attendee[] = await db.attendee.findMany();
+
     return NextResponse.json(attendees, { status: 200 });
   } catch (error) {
     console.error("GET Attendees API Error:", error);
@@ -40,25 +40,25 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, email, empresa, cargo, diet } = body;
+    const { name, email, company, role, diet } = body;
 
-    if (!name || !email || !empresa || !cargo) {
+    if (!name || !email || !company || !role) {
       return NextResponse.json(
         { message: "Missing required fields." },
         { status: 400 },
       );
     }
 
-    const newAttendee: Attendee = {
-      id: nextId++,
-      name,
-      email,
-      empresa,
-      cargo,
-      diet: diet || null,
-    };
-
-    attendees.push(newAttendee);
+    const newAttendee: Attendee = await db.attendee.create({
+      data: {
+        name,
+        email,
+        company,
+        role,
+        dietaryNeeds: diet || null,
+        eventId: 2,
+      },
+    });
 
     console.log("New Registration Received and Stored:", newAttendee);
 

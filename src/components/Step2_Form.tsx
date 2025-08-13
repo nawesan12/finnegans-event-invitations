@@ -6,11 +6,13 @@ export default function Step2_Form({ onSubmit }: { onSubmit: () => void }) {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries());
+    console.log(data);
 
     try {
-      const response = await fetch("/api/atendees", {
+      const response = await fetch("/api/attendees", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -23,7 +25,7 @@ export default function Step2_Form({ onSubmit }: { onSubmit: () => void }) {
         onSubmit(); // Move to the next step
       } else {
         console.error("Form submission failed.");
-        // Optionally, show an error message to the user
+        console.log(response);
       }
     } catch (error) {
       console.error("An error occurred during form submission:", error);
@@ -73,30 +75,30 @@ export default function Step2_Form({ onSubmit }: { onSubmit: () => void }) {
             </div>
             <div>
               <label
-                htmlFor="empresa"
+                htmlFor="company"
                 className="block text-md font-medium text-white mb-2"
               >
                 Empresa
               </label>
               <input
                 type="text"
-                id="empresa"
-                name="empresa"
+                id="company"
+                name="company"
                 required
                 className="w-full text-md px-4 py-2 rounded-full bg-white/30 border-2 border-white/40 text-white placeholder-white/70 focus:ring-2 focus:ring-white focus:outline-none backdrop-blur-md transition-all"
               />
             </div>
             <div>
               <label
-                htmlFor="cargo"
+                htmlFor="role"
                 className="block text-md font-medium text-white mb-2"
               >
                 Cargo
               </label>
               <input
                 type="text"
-                id="cargo"
-                name="cargo"
+                id="role"
+                name="role"
                 required
                 className="w-full text-md px-4 py-2 rounded-full bg-white/30 border-2 border-white/40 text-white placeholder-white/70 focus:ring-2 focus:ring-white focus:outline-none backdrop-blur-md transition-all"
               />
