@@ -20,19 +20,19 @@ export default function Step1_Invitation({
         />
         <span></span>
       </div>
-      <h1 className="text-6xl sm:text-6xl md:text-8xl font-semibold text-white mb-10 text-shadow w-full">
+      <h1 className="text-6xl sm:text-6xl md:text-8xl font-semibold text-white mb-10 jtext-shadow-2xs w-full">
         Comienza una <br /> nueva era ¿venís?
       </h1>
       <div className="flex flex-wrap justify-center md:justify-start gap-5">
         <button
           onClick={onYes}
-          className="btn-custom-border py-4 pl-12 pr-10 rounded-full text-lg font-semibold text-white bg-white/20 backdrop-blur-md shadow-lg transition-all hover:bg-white/30"
+          className="btn-custom-border py-4 pl-12 pr-10 rounded-full text-2xl font-semibold text-white bg-white/20 backdrop-blur-md shadow-xs transition-all hover:bg-white/30"
         >
           Obvio que sí!
         </button>
         <button
           onClick={onNo}
-          className="btn-custom-border py-4 pl-12 pr-10 rounded-full text-lg font-semibold text-white bg-white/20 backdrop-blur-md shadow-lg transition-all hover:bg-white/30"
+          className="btn-custom-border py-4 pl-12 pr-10 rounded-full text-2xl font-semibold text-white bg-white/20 backdrop-blur-md shadow-xs transition-all hover:bg-white/30"
         >
           No puedo :(
         </button>

@@ -780,6 +780,27 @@ export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [eventToEdit, setEventToEdit] = useState<Event | null>(null);
 
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [loginError, setLoginError] = useState<string | null>(null);
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    // In a real application, you would fetch this from a secure backend.
+    const MOCK_USER = "admin";
+    const MOCK_PASS = "password123";
+
+    if (username === MOCK_USER && password === MOCK_PASS) {
+      setIsAuthenticated(true);
+      setLoginError(null);
+      // Fetch data only after successful login
+      fetchData();
+    } else {
+      setLoginError("Invalid username or password");
+    }
+  };
+
   const fetchData = async () => {
     setIsLoading(true);
     try {
@@ -803,8 +824,10 @@ export default function App() {
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (isAuthenticated) {
+      fetchData();
+    }
+  }, [isAuthenticated]);
 
   const handleOpenModal = (event: Event | null) => {
     setEventToEdit(event);
@@ -887,6 +910,69 @@ export default function App() {
     }
   };
 
+  if (!isAuthenticated) {
+    return (
+      <div className="flex h-screen bg-[#04102D] text-white font-sans items-center justify-center">
+        <Card className="w-full max-w-sm border-white/20 p-8">
+          <div className="text-center mb-8">
+            <Image
+              src="/finnegans.svg"
+              alt="Logo"
+              width={170}
+              height={170}
+              className="mx-auto"
+            />
+          </div>
+          <form onSubmit={handleLogin} className="space-y-6">
+            <div>
+              <label
+                htmlFor="username"
+                className="block text-sm font-medium text-white/80 mb-2"
+              >
+                Usuario
+              </label>
+              <input
+                type="text"
+                name="username"
+                id="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+                className="w-full bg-white/10 border-white/20 rounded-lg p-3 focus:ring-2 focus:ring-[#4BC3FE] outline-none"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-white/80 mb-2"
+              >
+                Contraseña
+              </label>
+              <input
+                type="password"
+                name="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="w-full bg-white/10 border-white/20 rounded-lg p-3 focus:ring-2 focus:ring-[#4BC3FE] outline-none"
+              />
+            </div>
+            {loginError && (
+              <p className="text-sm text-[#FE4D17]">{loginError}</p>
+            )}
+            <div className="pt-2">
+              <Button type="submit" className="w-full py-3">
+                Login
+              </Button>
+            </div>
+          </form>
+        </Card>
+      </div>
+    );
+  }
+
+  // If authenticated, render the full dashboard
   return (
     <div className="flex h-screen bg-[#04102D] text-white font-sans">
       <Sidebar activePage={activePage} setActivePage={setActivePage} />
