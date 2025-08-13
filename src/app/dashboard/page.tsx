@@ -818,8 +818,8 @@ export default function App() {
   const handleSaveEvent = async (
     eventData: Omit<Event, "id" | "attendees">,
   ) => {
-    const method = eventToEdit ? "PUT" : "POST";
-    const url = eventToEdit ? `/api/events/${eventToEdit.id}` : "/api/events";
+    const method = eventToEdit ? "PATCH" : "POST";
+    const url = eventToEdit ? `/api/events` : "/api/events";
     try {
       const response = await fetch(url, {
         method,
