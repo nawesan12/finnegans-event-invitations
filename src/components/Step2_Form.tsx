@@ -67,7 +67,15 @@ export default function Step2_Form({ onSubmit }: { onSubmit: () => void }) {
                 id="name"
                 name="name"
                 required
-                className="w-full text-lg px-4 py-1 rounded-full bg-transparent text-black font-medium placeholder-black/50 border border-gray-300 focus:ring-2 focus:ring-cyan-400 focus:outline-none transition-all"
+                value={formValues.name}
+                onChange={(e) =>
+                  setFormValues((prev) => ({ ...prev, name: e.target.value }))
+                }
+                className={`w-full text-lg px-4 py-1 rounded-full bg-transparent text-black font-medium placeholder-black/50 border border-gray-300 focus:ring-2 focus:ring-cyan-400 focus:outline-none transition-all ${
+                  formValues.name
+                    ? "bg-white text-black placeholder-black/50"
+                    : "bg-transparent text-white placeholder-white/70"
+                }`}
               />
             </div>
             <div>
@@ -82,7 +90,15 @@ export default function Step2_Form({ onSubmit }: { onSubmit: () => void }) {
                 id="email"
                 name="email"
                 required
-                className="w-full text-lg px-4 py-1 rounded-full bg-transparent text-black font-medium placeholder-black/50 border border-gray-300 focus:ring-2 focus:ring-cyan-400 focus:outline-none transition-all"
+                value={formValues.email}
+                onChange={(e) =>
+                  setFormValues((prev) => ({ ...prev, email: e.target.value }))
+                }
+                className={`w-full text-lg px-4 py-1 rounded-full bg-transparent text-black font-medium placeholder-black/50 border border-gray-300 focus:ring-2 focus:ring-cyan-400 focus:outline-none transition-all ${
+                  formValues.email
+                    ? "bg-white text-black placeholder-black/50"
+                    : "bg-transparent text-white placeholder-white/70"
+                }`}
               />
             </div>
             <div>
@@ -97,7 +113,18 @@ export default function Step2_Form({ onSubmit }: { onSubmit: () => void }) {
                 id="company"
                 name="company"
                 required
-                className="w-full text-lg px-4 py-1 rounded-full bg-transparent text-black font-medium placeholder-black/50 border border-gray-300 focus:ring-2 focus:ring-cyan-400 focus:outline-none transition-all"
+                value={formValues.company}
+                onChange={(e) =>
+                  setFormValues((prev) => ({
+                    ...prev,
+                    company: e.target.value,
+                  }))
+                }
+                className={`w-full text-lg px-4 py-1 rounded-full bg-transparent text-black font-medium placeholder-black/50 border border-gray-300 focus:ring-2 focus:ring-cyan-400 focus:outline-none transition-all ${
+                  formValues.company
+                    ? "bg-white text-black placeholder-black/50"
+                    : "bg-transparent text-white placeholder-white/70"
+                }`}
               />
             </div>
             <div>
@@ -112,7 +139,15 @@ export default function Step2_Form({ onSubmit }: { onSubmit: () => void }) {
                 id="role"
                 name="role"
                 required
-                className="w-full text-lg px-4 py-1 rounded-full bg-transparent text-black font-medium placeholder-black/50 border border-gray-300 focus:ring-2 focus:ring-cyan-400 focus:outline-none transition-all"
+                value={formValues.role}
+                onChange={(e) =>
+                  setFormValues((prev) => ({ ...prev, role: e.target.value }))
+                }
+                className={`w-full text-lg px-4 py-1 rounded-full bg-transparent text-black font-medium placeholder-black/50 border border-gray-300 focus:ring-2 focus:ring-cyan-400 focus:outline-none transition-all ${
+                  formValues.role
+                    ? "bg-white text-black placeholder-black/50"
+                    : "bg-transparent text-white placeholder-white/70"
+                }`}
               />
             </div>
           </div>
@@ -177,7 +212,11 @@ export default function Step2_Form({ onSubmit }: { onSubmit: () => void }) {
                     setCustomDiet(e.target.value);
                     setSelectedDiet(e.target.value ? "otra" : null);
                   }}
-                  className="flex-1 px-3 py-1 rounded-full  backdrop-blur-xs text-black placeholder-white text-lg focus:outline-none font-medium"
+                  className={`flex-1 px-3 py-1 rounded-full  backdrop-blur-xs text-black placeholder-white text-lg focus:outline-none font-medium ${
+                    customDiet
+                      ? "bg-white text-black placeholder-black/50"
+                      : "bg-transparent text-white placeholder-white/70"
+                  }`}
                 />
               </div>
             </div>
