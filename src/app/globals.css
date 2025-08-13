@@ -124,10 +124,21 @@ body {
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
+    * {
+        @apply border-border outline-ring/50;
     }
-  body {
-    @apply bg-background text-foreground;
+    body {
+        @apply bg-background text-foreground;
     }
+}
+
+@font-face {
+    font-family: "Bright Clones";
+    src: url("/fonts/Bright Clones Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+.font-bright-clones {
+    font-family: "Bright Clones", sans-serif;
 }

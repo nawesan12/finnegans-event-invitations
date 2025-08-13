@@ -1,17 +1,20 @@
-import { Poppins, Dancing_Script } from "next/font/google";
+import { Poppins } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-// Configure fonts
+// Google font: Poppins
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-poppins",
 });
 
-const dancingScript = Dancing_Script({
-  subsets: ["latin"],
-  weight: "700",
-  variable: "--font-dancing-script",
+// Local font: Bright Clones
+const brightClones = localFont({
+  src: "../../public/fonts/Bright Clones Regular.ttf", // Path relative to `public/`
+  variable: "--font-bright-clones",
+  weight: "400",
+  style: "normal",
 });
 
 export const metadata = {
@@ -26,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body
-        className={`${poppins.variable} ${dancingScript.variable} font-sans bg-slate-900 lg:overflow-hidden min-h-screen relative`}
+        className={`${poppins.variable} ${brightClones.variable} font-sans bg-slate-900 lg:overflow-hidden min-h-screen relative`}
       >
         {/* Background Container */}
         <div className="fixed inset-0 -z-10">
@@ -37,9 +40,3 @@ export default function RootLayout({
     </html>
   );
 }
-
-// Note: Ensure your public folder contains the images:
-// /public/Imagen.png
-// /public/finnegans.svg
-// /public/calendario-blanco.svg
-// etc.

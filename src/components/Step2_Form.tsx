@@ -5,6 +5,12 @@ export default function Step2_Form({ onSubmit }: { onSubmit: () => void }) {
   const [hasAllergy, setHasAllergy] = useState<string | null>(null);
   const [selectedDiet, setSelectedDiet] = useState<string | null>(null);
   const [customDiet, setCustomDiet] = useState<string>("");
+  const [formValues, setFormValues] = useState({
+    name: "",
+    email: "",
+    company: "",
+    role: "",
+  });
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -42,7 +48,7 @@ export default function Step2_Form({ onSubmit }: { onSubmit: () => void }) {
 
   return (
     <div className="relative bottom-6">
-      <h2 className="text-xl sm:text-xl font-bold text-white mb-4 px-4 text-shadow text-shadow-xs">
+      <h2 className="text-xl sm:text-xl font-medium text-white mb-4 px-4 py-2 text-shadow text-shadow-xs">
         Algunos datos
       </h2>
       <div className="px-8 rounded-3xl bg-white/40 shadow-md backdrop-blur-lg border-2 border-white/30">
@@ -61,7 +67,7 @@ export default function Step2_Form({ onSubmit }: { onSubmit: () => void }) {
                 id="name"
                 name="name"
                 required
-                className="w-full text-lg px-4 py-1 rounded-full bg-transparent border-2 border-white text-white placeholder-white/70 focus:ring-2 focus:ring-white focus:outline-none transition-all"
+                className="w-full text-lg px-4 py-1 rounded-full bg-transparent text-black font-medium placeholder-black/50 border border-gray-300 focus:ring-2 focus:ring-cyan-400 focus:outline-none transition-all"
               />
             </div>
             <div>
@@ -76,7 +82,7 @@ export default function Step2_Form({ onSubmit }: { onSubmit: () => void }) {
                 id="email"
                 name="email"
                 required
-                className="w-full text-lg px-4 py-1 rounded-full bg-transparent border-2 border-white text-white placeholder-white/70 focus:ring-2 focus:ring-white focus:outline-none transition-all"
+                className="w-full text-lg px-4 py-1 rounded-full bg-transparent text-black font-medium placeholder-black/50 border border-gray-300 focus:ring-2 focus:ring-cyan-400 focus:outline-none transition-all"
               />
             </div>
             <div>
@@ -91,7 +97,7 @@ export default function Step2_Form({ onSubmit }: { onSubmit: () => void }) {
                 id="company"
                 name="company"
                 required
-                className="w-full text-lg px-4 py-1 rounded-full bg-transparent border-2 border-white text-white placeholder-white/70 focus:ring-2 focus:ring-white focus:outline-none transition-all"
+                className="w-full text-lg px-4 py-1 rounded-full bg-transparent text-black font-medium placeholder-black/50 border border-gray-300 focus:ring-2 focus:ring-cyan-400 focus:outline-none transition-all"
               />
             </div>
             <div>
@@ -106,7 +112,7 @@ export default function Step2_Form({ onSubmit }: { onSubmit: () => void }) {
                 id="role"
                 name="role"
                 required
-                className="w-full text-lg px-4 py-1 rounded-full bg-transparent border-2 border-white text-white placeholder-white/70 focus:ring-2 focus:ring-white focus:outline-none transition-all"
+                className="w-full text-lg px-4 py-1 rounded-full bg-transparent text-black font-medium placeholder-black/50 border border-gray-300 focus:ring-2 focus:ring-cyan-400 focus:outline-none transition-all"
               />
             </div>
           </div>
@@ -171,7 +177,7 @@ export default function Step2_Form({ onSubmit }: { onSubmit: () => void }) {
                     setCustomDiet(e.target.value);
                     setSelectedDiet(e.target.value ? "otra" : null);
                   }}
-                  className="flex-1 px-3 py-1 rounded-full bg-white/10 backdrop-blur-xs text-white placeholder:text-white text-lg focus:outline-none"
+                  className="flex-1 px-3 py-1 rounded-full  backdrop-blur-xs text-black placeholder-white text-lg focus:outline-none font-medium"
                 />
               </div>
             </div>
