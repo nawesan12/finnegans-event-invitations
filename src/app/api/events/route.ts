@@ -36,7 +36,7 @@ export async function PATCH(request: NextRequest) {
         name,
         location,
         status,
-        date,
+        date: new Date(date),
         capacity,
       },
     });

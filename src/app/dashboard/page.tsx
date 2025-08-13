@@ -84,6 +84,7 @@ const Icon = ({
     trash: (
       <path d="M3 6h18m-2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
     ),
+    arrowLeft: <path d="m12 19-7-7 7-7m-7 7h18" />,
   };
   return (
     <svg
@@ -491,10 +492,12 @@ const DashboardPage = ({
   events,
   attendees,
   isLoading,
+  onViewDetails,
 }: {
   events: Event[];
   attendees: Attendee[];
   isLoading: boolean;
+  onViewDetails: (eventId: number) => void;
 }) => {
   // FIX: Create dynamically imported, client-side-only versions of the chart components.
   // The loading component reuses the skeleton you already created.
@@ -568,7 +571,11 @@ const DashboardPage = ({
           />
         </div>
         <div>
-          <UpcomingEventsAgenda events={events} isLoading={isLoading} />
+          <UpcomingEventsAgenda
+            events={events}
+            isLoading={isLoading}
+            onViewDetails={onViewDetails}
+          />
         </div>
       </div>
 
@@ -589,11 +596,13 @@ const EventsPage = ({
   isLoading,
   onEdit,
   onDelete,
+  onViewDetails,
 }: {
   events: Event[];
   isLoading: boolean;
   onEdit: (event: Event) => void;
   onDelete: (eventId: number) => void;
+  onViewDetails: (eventId: number) => void; // NEW: Prop to handle navigation
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -708,7 +717,17 @@ const EventsPage = ({
                       scope="row"
                       className="px-6 py-4 font-semibold text-white whitespace-nowrap"
                     >
-                      {event.name}
+                      {/* NEW: Clickable event name */}
+                      <a
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          onViewDetails(event.id);
+                        }}
+                        className="hover:text-[#4BC3FE] transition-colors"
+                      >
+                        {event.name}
+                      </a>
                     </th>
                     <td className="px-6 py-4">
                       {new Date(event.date).toLocaleDateString("es-AR")}
@@ -901,6 +920,139 @@ const AttendeesPage = ({
   );
 };
 
+// --- NEW: EVENT DETAILS PAGE ---
+const EventDetailsPage = ({
+  event,
+  attendees,
+  isLoading,
+  onBack,
+  onEdit,
+}: {
+  event: Event | undefined;
+  attendees: Attendee[];
+  isLoading: boolean;
+  onBack: () => void;
+  onEdit: (event: Event) => void;
+}) => {
+  if (isLoading || !event) {
+    // Show a full-page skeleton while loading event data
+    return (
+      <div className="p-6 space-y-6 animate-pulse">
+        <div className="h-8 w-1/4 bg-white/10 rounded-md"></div>
+        <div className="h-10 w-3/4 bg-white/10 rounded-md"></div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="h-24 bg-white/10 rounded-xl"></div>
+          <div className="h-24 bg-white/10 rounded-xl"></div>
+          <div className="h-24 bg-white/10 rounded-xl"></div>
+        </div>
+        <div className="h-80 bg-white/10 rounded-xl"></div>
+      </div>
+    );
+  }
+
+  const attendanceRate =
+    event.capacity > 0
+      ? ((attendees.length / event.capacity) * 100).toFixed(1)
+      : "0.0";
+  const dietaryNeedsCount = attendees.filter((a) => a.dietaryNeeds).length;
+
+  return (
+    <div className="p-6 space-y-6">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div>
+          <Button variant="ghost" onClick={onBack} className="mb-2 -ml-2">
+            <Icon name="arrowLeft" className="mr-2" />
+            Volver a Eventos
+          </Button>
+          <h2 className="text-3xl font-bold text-white">{event.name}</h2>
+          <p className="text-white/60">
+            {new Date(event.date).toLocaleDateString("es-AR", {
+              weekday: "long",
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}{" "}
+            · {event.location}
+          </p>
+        </div>
+        <Button onClick={() => onEdit(event)} className="gap-2 px-4 py-2">
+          <Icon name="edit" className="w-4 h-4" />
+          Editar Evento
+        </Button>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <StatCard
+          title="Asistencia"
+          value={`${attendees.length} / ${event.capacity}`}
+          icon="users"
+          isLoading={isLoading}
+        />
+        <StatCard
+          title="Tasa de Asistencia"
+          value={`${attendanceRate}%`}
+          icon="pieChart"
+          isLoading={isLoading}
+        />
+        <StatCard
+          title="Necesidades Dietéticas"
+          value={dietaryNeedsCount}
+          icon="edit"
+          isLoading={isLoading}
+        />
+        <StatCard
+          title="Estado"
+          value={event.status}
+          icon="ticket"
+          isLoading={isLoading}
+        />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-1"></div>
+        <div className="lg:col-span-2">
+          <Card>
+            <h3 className="text-lg font-semibold text-white p-4 border-b border-white/10">
+              Lista de Asistentes ({attendees.length})
+            </h3>
+            <div className="overflow-y-auto max-h-[400px]">
+              <table className="w-full text-sm text-left text-white/80">
+                <thead className="text-xs text-white/60 uppercase bg-white/5 sticky top-0">
+                  <tr>
+                    <th scope="col" className="px-6 py-3">
+                      Nombre
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Empresa
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Rol
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-white/10">
+                  {attendees.map((attendee) => (
+                    <tr key={attendee.id} className="hover:bg-white/5">
+                      <td className="px-6 py-4 font-medium">{attendee.name}</td>
+                      <td className="px-6 py-4">{attendee.company}</td>
+                      <td className="px-6 py-4">{attendee.role}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              {attendees.length === 0 && (
+                <div className="text-center py-10 text-white/50">
+                  No hay asistentes registrados para este evento.
+                </div>
+              )}
+            </div>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // --- MAIN APP COMPONENT ---
 export default function App() {
   const [activePage, setActivePage] = useState("Panel");
@@ -911,6 +1063,9 @@ export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [eventToEdit, setEventToEdit] = useState<Event | null>(null);
 
+  // NEW: State to manage which event detail page to show
+  const [viewingEventId, setViewingEventId] = useState<number | null>(null);
+
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -918,14 +1073,12 @@ export default function App() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real application, you would fetch this from a secure backend.
     const MOCK_USER = "finnegansadmin";
     const MOCK_PASS = "XLR8FN";
 
     if (username === MOCK_USER && password === MOCK_PASS) {
       setIsAuthenticated(true);
       setLoginError(null);
-      // Fetch data only after successful login
       fetchData();
     } else {
       setLoginError("Invalid username or password");
@@ -955,10 +1108,10 @@ export default function App() {
   };
 
   useEffect(() => {
-    if (isAuthenticated) {
-      fetchData();
-    }
-  }, [isAuthenticated]);
+    // This effect ensures that if we switch main pages (e.g., from Eventos to Panel),
+    // we clear the detailed view.
+    setViewingEventId(null);
+  }, [activePage]);
 
   const handleOpenModal = (event: Event | null) => {
     setEventToEdit(event);
@@ -973,15 +1126,18 @@ export default function App() {
     eventData: Omit<Event, "id" | "attendees">,
   ) => {
     const method = eventToEdit ? "PATCH" : "POST";
-    const url = eventToEdit ? `/api/events` : "/api/events";
+    const url = eventToEdit
+      ? `/api/events?id=${eventToEdit.id}`
+      : "/api/events";
     try {
       const response = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(eventData),
       });
+
       if (!response.ok) throw new Error("No se pudo guardar el evento");
-      await fetchData(); // Re-fetch data to show changes
+      await fetchData();
       handleCloseModal();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error al guardar");
@@ -995,11 +1151,19 @@ export default function App() {
           method: "DELETE",
         });
         if (!response.ok) throw new Error("No se pudo eliminar el evento");
-        await fetchData(); // Re-fetch data
+        await fetchData();
       } catch (err) {
         setError(err instanceof Error ? err.message : "Error al eliminar");
       }
     }
+  };
+
+  // NEW: Handlers for navigating to/from the details page
+  const handleViewEventDetails = (eventId: number) => {
+    setViewingEventId(eventId);
+  };
+  const handleBackToEventsList = () => {
+    setViewingEventId(null);
   };
 
   const renderActivePage = () => {
@@ -1011,15 +1175,33 @@ export default function App() {
             events={events}
             attendees={attendees}
             isLoading={isLoading}
+            onViewDetails={handleViewEventDetails}
           />
         );
       case "Eventos":
+        // NEW: Conditional rendering for the event details view
+        if (viewingEventId) {
+          const event = events.find((e) => e.id === viewingEventId);
+          const eventAttendees = attendees.filter(
+            (a) => a.eventId === viewingEventId,
+          );
+          return (
+            <EventDetailsPage
+              event={event}
+              attendees={eventAttendees}
+              isLoading={isLoading}
+              onBack={handleBackToEventsList}
+              onEdit={handleOpenModal}
+            />
+          );
+        }
         return (
           <EventsPage
             events={events}
             isLoading={isLoading}
             onEdit={handleOpenModal}
             onDelete={handleDeleteEvent}
+            onViewDetails={handleViewEventDetails}
           />
         );
       case "Asistentes":
@@ -1036,6 +1218,7 @@ export default function App() {
             events={events}
             attendees={attendees}
             isLoading={isLoading}
+            onViewDetails={handleViewEventDetails}
           />
         );
     }
@@ -1109,10 +1292,7 @@ export default function App() {
       <Sidebar activePage={activePage} setActivePage={setActivePage} />
       <div className="flex-1 flex flex-col overflow-hidden">
         <Header />
-        <main
-          className="flex-1 overflow-x-hidden overflow-y-auto bg-cover bg-center"
-          style={{ backgroundImage: "url('/grid-bg.svg')" }}
-        >
+        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-cover bg-center">
           {renderActivePage()}
         </main>
       </div>
@@ -1129,9 +1309,11 @@ export default function App() {
 const UpcomingEventsAgenda = ({
   events,
   isLoading,
+  onViewDetails,
 }: {
   events: Event[];
   isLoading: boolean;
+  onViewDetails: (id: number) => void;
 }) => {
   const upcomingEvents = useMemo(() => {
     return events
@@ -1179,7 +1361,16 @@ const UpcomingEventsAgenda = ({
                 </span>
               </div>
               <div>
-                <p className="font-semibold text-white">{event.name}</p>
+                <a
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onViewDetails(event.id);
+                  }}
+                  className="hover:text-[#4BC3FE] transition-colors"
+                >
+                  <p className="font-semibold text-white">{event.name}</p>
+                </a>
                 <p className="text-xs text-white/60">{event.location}</p>
               </div>
             </li>
