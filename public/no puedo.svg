@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 411.3 155">
+  <!-- Generator: Adobe Illustrator 29.6.1, SVG Export Plug-In . SVG Version: 2.1.1 Build 9)  -->
+  <defs>
+    <style>
+      .st0 {
+        font-family: Scandia-Medium, Scandia;
+        font-size: 42.3px;
+        font-weight: 500;
+      }
+
+      .st0, .st1 {
+        fill: #fff;
+      }
+
+      .st1 {
+        filter: url(#drop-shadow-2);
+        opacity: .4;
+      }
+
+      .st2 {
+        isolation: isolate;
+      }
+
+      .st3 {
+        filter: url(#drop-shadow-3);
+        stroke: url(#linear-gradient1);
+        stroke-width: 3px;
+      }
+
+      .st3, .st4 {
+        fill: none;
+        mix-blend-mode: lighten;
+        opacity: .8;
+        stroke-miterlimit: 10;
+      }
+
+      .st4 {
+        filter: url(#drop-shadow-1);
+        stroke: url(#linear-gradient);
+        stroke-width: 2.9px;
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="-284" y1="181.7" x2="43.6" y2="181.7" gradientTransform="translate(323 -106.9)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset="1" stop-color="#000"/>
+    </linearGradient>
+    <filter id="drop-shadow-1" x="25.2" y="15.3" width="378" height="142" filterUnits="userSpaceOnUse">
+      <feOffset dx="11.4" dy="11.4"/>
+      <feGaussianBlur result="blur" stdDeviation="8.1"/>
+      <feFlood flood-color="#000" flood-opacity=".4"/>
+      <feComposite in2="blur" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="drop-shadow-2" x="21.2" y="12.3" width="394" height="156" filterUnits="userSpaceOnUse">
+      <feOffset dx="15.6" dy="15.6"/>
+      <feGaussianBlur result="blur1" stdDeviation="11.1"/>
+      <feFlood flood-color="#000" flood-opacity=".4"/>
+      <feComposite in2="blur1" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient1" x1="37.9" y1="74.8" x2="366.7" y2="74.8" gradientTransform="matrix(1,0,0,1,0,0)" xlink:href="#linear-gradient"/>
+    <filter id="drop-shadow-3" x="19.2" y="10.3" width="397" height="160" filterUnits="userSpaceOnUse">
+      <feOffset dx="15.6" dy="15.6"/>
+      <feGaussianBlur result="blur2" stdDeviation="11.1"/>
+      <feFlood flood-color="#000" flood-opacity=".4"/>
+      <feComposite in2="blur2" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g class="st2">
+    <g id="Layer_1">
+      <path class="st4" d="M82.1,30.6h241.5c23,0,41.7,18.7,41.7,41.7v5.1c0,23-18.7,41.7-41.7,41.7H82.1c-23,0-41.7-18.7-41.7-41.7v-5.1c0-23,18.7-41.7,41.7-41.7Z" transform="translate(405.6 149.6) rotate(180)"/>
+      <rect class="st1" x="39.4" y="30.6" width="325.7" height="88.4" rx="43" ry="43"/>
+      <path class="st3" d="M82.8,30.6h238.9c24,0,43.4,19.4,43.4,43.4v1.6c0,24-19.4,43.4-43.4,43.4H82.8c-24,0-43.4-19.4-43.4-43.4v-1.6c0-24,19.4-43.4,43.4-43.4Z"/>
+      <text class="st0" transform="translate(79.2 88)"><tspan x="0" y="0">No puedo :(</tspan></text>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 462.1 175.8">
+  <!-- Generator: Adobe Illustrator 29.6.1, SVG Export Plug-In . SVG Version: 2.1.1 Build 9)  -->
+  <defs>
+    <style>
+      .st0, .st1, .st2 {
+        fill: none;
+      }
+
+      .st3 {
+        filter: url(#drop-shadow-1);
+        opacity: .4;
+      }
+
+      .st3, .st4 {
+        fill: #fff;
+      }
+
+      .st5 {
+        isolation: isolate;
+      }
+
+      .st1 {
+        filter: url(#drop-shadow-3);
+        stroke: url(#linear-gradient1);
+      }
+
+      .st1, .st2 {
+        mix-blend-mode: lighten;
+        opacity: .8;
+        stroke-miterlimit: 10;
+        stroke-width: 3px;
+      }
+
+      .st2 {
+        filter: url(#drop-shadow-2);
+        stroke: url(#linear-gradient);
+      }
+
+      .st6 {
+        display: none;
+      }
+
+      .st7 {
+        clip-path: url(#clippath);
+      }
+
+      .st4 {
+        font-family: Poppins-Medium, Poppins;
+        font-size: 46.5px;
+        font-weight: 500;
+      }
+    </style>
+    <clipPath id="clippath">
+      <rect class="st0" x="43.7" y="40.2" width="364.6" height="88.4" rx="44.2" ry="44.2"/>
+    </clipPath>
+    <filter id="drop-shadow-1" x="29.4" y="25.6" width="419" height="142" filterUnits="userSpaceOnUse">
+      <feOffset dx="12.1" dy="12.1"/>
+      <feGaussianBlur result="blur" stdDeviation="8.6"/>
+      <feFlood flood-color="#000" flood-opacity=".4"/>
+      <feComposite in2="blur" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient" x1="42.2" y1="84.4" x2="411.2" y2="84.4" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset="1" stop-color="#000"/>
+    </linearGradient>
+    <filter id="drop-shadow-2" x="27.4" y="24.6" width="423" height="144" filterUnits="userSpaceOnUse">
+      <feOffset dx="12.1" dy="12.1"/>
+      <feGaussianBlur result="blur1" stdDeviation="8.6"/>
+      <feFlood flood-color="#000" flood-opacity=".4"/>
+      <feComposite in2="blur1" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient1" x1="455.9" y1="-103.5" x2="825" y2="-103.5" gradientTransform="translate(-414.4 187.8)" xlink:href="#linear-gradient"/>
+    <filter id="drop-shadow-3" x="27.4" y="24.6" width="422" height="144" filterUnits="userSpaceOnUse">
+      <feOffset dx="12.1" dy="12.1"/>
+      <feGaussianBlur result="blur2" stdDeviation="8.6"/>
+      <feFlood flood-color="#000" flood-opacity=".4"/>
+      <feComposite in2="blur2" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g class="st5">
+    <g id="Layer_1">
+      <g class="st7">
+        <g id="RpQIvR" class="st6">
+          <image width="1468" height="857" transform="translate(-402.5 -488.2)" xlink:href="boton obvio-1.png"/>
+        </g>
+        <rect class="st0" x="-28.9" y="-711.9" width="744.2" height="911.5" rx="94" ry="94"/>
+      </g>
+      <rect class="st3" x="43.7" y="40.2" width="366" height="88.4" rx="44.2" ry="44.2"/>
+      <path class="st2" d="M87.9,40.2h277.6c24.4,0,44.2,19.8,44.2,44.2h0c0,24.4-19.8,44.2-44.2,44.2H87.9c-24.4,0-44.2-19.8-44.2-44.2h0c0-24.4,19.8-44.2,44.2-44.2Z"/>
+      <path class="st1" d="M87.2,40.2h277.6c24.4,0,44.2,19.8,44.2,44.2h0c0,24.4-19.8,44.2-44.2,44.2H87.2c-24.4,0-44.2-19.8-44.2-44.2h0c0-24.4,19.8-44.2,44.2-44.2Z" transform="translate(452 168.8) rotate(180)"/>
+      <text class="st4" transform="translate(75.5 99.5)"><tspan x="0" y="0">Obvio que sí!</tspan></text>
+    </g>
+  </g>
+</svg>

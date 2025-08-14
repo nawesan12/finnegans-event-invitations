@@ -23,18 +23,24 @@ export default function Step1_Invitation({
       <h1 className="text-6xl sm:text-6xl md:text-8xl font-semibold text-white mb-10 jtext-shadow-2xs w-full">
         Comienza una <br /> nueva era ¿venís?
       </h1>
-      <div className="flex flex-wrap justify-center md:justify-start gap-5">
-        <button
-          onClick={onYes}
-          className="btn-custom-border py-4 pl-12 pr-10 rounded-full text-2xl font-semibold text-white bg-white/20 backdrop-blur-md shadow-xs transition-all hover:bg-white/30"
-        >
-          Obvio que sí!
+      <div className="flex flex-wrap justify-center md:justify-start ">
+        <button onClick={onYes} className="cursor-pointer relative lg:-left-4">
+          <Image
+            src="/boton obvio.svg"
+            alt="Check Icon"
+            width={24}
+            height={24}
+            className="rounded-full h-24 aspect-auto object-contain w-auto"
+          />
         </button>
-        <button
-          onClick={onNo}
-          className="btn-custom-border py-4 pl-12 pr-10 rounded-full text-2xl font-semibold text-white bg-white/20 backdrop-blur-md shadow-xs transition-all hover:bg-white/30"
-        >
-          No puedo :(
+        <button onClick={onNo} className="cursor-pointer relative lg:-left-8">
+          <Image
+            src="/no puedo.svg"
+            alt="Check Icon"
+            width={24}
+            height={24}
+            className="rounded-full h-24 aspect-auto object-contain w-auto"
+          />
         </button>
       </div>
     </div>
