@@ -54,12 +54,6 @@ export default function Step3_ThankYou() {
           height={200}
           className="aspect-auto h-16 mx-0 px-0 max-w-max"
         />
-        <p className="text-white/90 text-lg font-semibold text-center sm:text-right whitespace-nowrap">
-          Te acompañamos al futuro que{" "}
-          <span className="italic font-normal font-bright-clones text-2xl">
-            imaginamos.
-          </span>
-        </p>
       </div>
     </div>
   );
