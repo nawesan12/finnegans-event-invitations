@@ -60,7 +60,7 @@ export default function Home() {
           </div>
         </div>
 
-        <InfoSidebar />
+        {currentStep != 3 && <InfoSidebar />}
       </div>
 
       {/* Message Box */}

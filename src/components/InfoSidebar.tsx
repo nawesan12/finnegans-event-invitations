@@ -24,7 +24,7 @@ export default function InfoSidebar() {
   );
 
   return (
-    <div className="hidden md:flex items-center relative h-full">
+    <div className="hidden md:flex items-center relative -left-4 h-full">
       <aside className="relative flex flex-col gap-6 z-20 justify-center h-full">
         {items.map((item, index) => {
           const content = <IconBlock icon={item.icon} label={item.label} />;

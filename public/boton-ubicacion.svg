@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 180.2 171.1">
+  <!-- Generator: Adobe Illustrator 29.6.1, SVG Export Plug-In . SVG Version: 2.1.1 Build 9)  -->
+  <defs>
+    <style>
+      .st0 {
+        filter: url(#drop-shadow-2);
+        stroke: #fff;
+        stroke-width: 3.5px;
+      }
+
+      .st0, .st1 {
+        opacity: .4;
+      }
+
+      .st0, .st2 {
+        stroke-miterlimit: 10;
+      }
+
+      .st0, .st3 {
+        fill: none;
+      }
+
+      .st1 {
+        fill: #fff;
+        filter: url(#drop-shadow-1);
+      }
+
+      .st2 {
+        fill: #4bc3ff;
+        stroke: #4bc3ff;
+        stroke-width: 11.2px;
+      }
+
+      .st3 {
+        stroke: #04102d;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 2.7px;
+      }
+    </style>
+    <filter id="drop-shadow-1" x="15.2" y="10.2" width="167" height="167" filterUnits="userSpaceOnUse">
+      <feOffset dx="8.6" dy="8.6"/>
+      <feGaussianBlur result="blur" stdDeviation="6.2"/>
+      <feFlood flood-color="#000" flood-opacity=".4"/>
+      <feComposite in2="blur" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="drop-shadow-2" x="13.2" y="9.2" width="171" height="170" filterUnits="userSpaceOnUse">
+      <feOffset dx="8.6" dy="8.6"/>
+      <feGaussianBlur result="blur1" stdDeviation="6.2"/>
+      <feFlood flood-color="#000" flood-opacity=".4"/>
+      <feComposite in2="blur1" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <rect class="st1" x="25.6" y="21.1" width="128.9" height="128.9" rx="25.7" ry="25.7"/>
+  <rect class="st0" x="25.6" y="21.1" width="128.9" height="128.9" rx="25.7" ry="25.7"/>
+  <path class="st2" d="M69,79.5c.9,5.1,1.9,8,5.9,14.2l15.5,22.1,14.7-21.1c4.9-7.8,6.4-11.8,6.4-18.7,0-11.8-9.6-21.4-21.4-21.4s-21.4,9.6-21.4,21.4.1,2.3.3,3.5"/>
+  <circle class="st3" cx="90.1" cy="78.2" r="7.1"/>
+  <path class="st3" d="M111.5,76.6c0-11.8-9.6-21.4-21.4-21.4s-21.4,9.6-21.4,21.4.1,2.3.3,3.5h-.1s.2.3.2.3c.9,5.1,1.8,7.7,5.9,13.9l15.5,22.1,14.7-21.1c4.9-7.8,6.4-11.8,6.4-18.7Z"/>
+</svg>

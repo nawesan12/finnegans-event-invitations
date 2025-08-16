@@ -71,7 +71,7 @@ export default function Step2_Form({ onSubmit }: { onSubmit: () => void }) {
                 onChange={(e) =>
                   setFormValues((prev) => ({ ...prev, name: e.target.value }))
                 }
-                className={`w-full text-lg px-4 py-1 rounded-full bg-transparent text-black font-medium placeholder-black/50 border border-gray-300 focus:ring-2 focus:ring-cyan-400 focus:outline-none transition-all ${
+                className={`w-full text-lg px-4 py-1 rounded-full bg-transparent text-black font-medium placeholder-black/50 border border-gray-300 focus:ring-2  focus:outline-none transition-all ${
                   formValues.name
                     ? "bg-white text-black placeholder-black/50"
                     : "bg-transparent text-white placeholder-white/70"
@@ -94,7 +94,7 @@ export default function Step2_Form({ onSubmit }: { onSubmit: () => void }) {
                 onChange={(e) =>
                   setFormValues((prev) => ({ ...prev, email: e.target.value }))
                 }
-                className={`w-full text-lg px-4 py-1 rounded-full bg-transparent text-black font-medium placeholder-black/50 border border-gray-300 focus:ring-2 focus:ring-cyan-400 focus:outline-none transition-all ${
+                className={`w-full text-lg px-4 py-1 rounded-full bg-transparent text-black font-medium placeholder-black/50 border border-gray-300 focus:ring-2  focus:outline-none transition-all ${
                   formValues.email
                     ? "bg-white text-black placeholder-black/50"
                     : "bg-transparent text-white placeholder-white/70"
@@ -120,7 +120,7 @@ export default function Step2_Form({ onSubmit }: { onSubmit: () => void }) {
                     company: e.target.value,
                   }))
                 }
-                className={`w-full text-lg px-4 py-1 rounded-full bg-transparent text-black font-medium placeholder-black/50 border border-gray-300 focus:ring-2 focus:ring-cyan-400 focus:outline-none transition-all ${
+                className={`w-full text-lg px-4 py-1 rounded-full bg-transparent text-black font-medium placeholder-black/50 border border-gray-300 focus:ring-2  focus:outline-none transition-all ${
                   formValues.company
                     ? "bg-white text-black placeholder-black/50"
                     : "bg-transparent text-white placeholder-white/70"
@@ -143,7 +143,7 @@ export default function Step2_Form({ onSubmit }: { onSubmit: () => void }) {
                 onChange={(e) =>
                   setFormValues((prev) => ({ ...prev, role: e.target.value }))
                 }
-                className={`w-full text-lg px-4 py-1 rounded-full bg-transparent text-black font-medium placeholder-black/50 border border-gray-300 focus:ring-2 focus:ring-cyan-400 focus:outline-none transition-all ${
+                className={`w-full text-lg px-4 py-1 rounded-full bg-transparent text-black font-medium placeholder-black/50 border border-gray-300 focus:ring-2  focus:outline-none transition-all ${
                   formValues.role
                     ? "bg-white text-black placeholder-black/50"
                     : "bg-transparent text-white placeholder-white/70"
@@ -153,11 +153,11 @@ export default function Step2_Form({ onSubmit }: { onSubmit: () => void }) {
           </div>
 
           {/* Allergy Question */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center lg:flex-row flex-col gap-4">
             <label className="block text-lg font-medium text-white">
               ¿Alguna alergia o restricción alimentaria?
             </label>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center  gap-4">
               {["yes", "no"].map((option) => (
                 <button
                   key={option}
@@ -202,7 +202,7 @@ export default function Step2_Form({ onSubmit }: { onSubmit: () => void }) {
               ))}
 
               {/* Opción Otra con input */}
-              <div className="flex items-center gap-3 p-3 w-full rounded-full bg-transparent border-white transition-all">
+              <div className="flex items-center gap-3 p-3 lg:w-full max-w-[40px] rounded-full bg-transparent border-white transition-all">
                 <input
                   type="text"
                   name="diet"
@@ -212,7 +212,7 @@ export default function Step2_Form({ onSubmit }: { onSubmit: () => void }) {
                     setCustomDiet(e.target.value);
                     setSelectedDiet(e.target.value ? "otra" : null);
                   }}
-                  className={`flex-1 px-3 py-1 rounded-full  backdrop-blur-xs text-black placeholder-white text-lg focus:outline-none font-medium ${
+                  className={`lg:relative lg:right-4 flex-1 px-3 py-1 max-w-32 lg:max-w-none rounded-full  backdrop-blur-xs text-black placeholder-white text-lg focus:outline-none font-medium ${
                     customDiet
                       ? "bg-white text-black placeholder-black/50"
                       : "bg-transparent text-white placeholder-white/70"

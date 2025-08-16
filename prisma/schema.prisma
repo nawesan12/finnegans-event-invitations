@@ -9,8 +9,10 @@ datasource db {
   relationMode = "prisma"
 }
 
-// 2. Define an Enum for event status
-// Using an enum ensures that the status field can only contain these specific values.
+//================================================================//
+// CORE EVENT MODELS (Existing)
+//================================================================//
+
 enum EventStatus {
   UPCOMING
   COMPLETED
@@ -18,37 +20,136 @@ enum EventStatus {
   CANCELED
 }
 
-// 3. Define the Event model
-// This model corresponds to a single event your company hosts.
 model Event {
-  id       Int         @id @default(autoincrement())
-  name     String
-  date     DateTime
-  location String
-  capacity Int
-  status   EventStatus @default(PLANNING)
-
-  // Relation: An event can have many attendees.
+  id        Int         @id @default(autoincrement())
+  name      String
+  date      DateTime
+  location  String
+  capacity  Int
+  status    EventStatus @default(PLANNING)
   attendees Attendee[]
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+model Attendee {
+  id           Int      @id @default(autoincrement())
+  name         String
+  email        String   @unique
+  company      String
+  role         String
+  dietaryNeeds String?
+  event        Event    @relation(fields: [eventId], references: [id])
+  eventId      Int
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+//================================================================//
+// PROJECT MANAGEMENT MODELS (New)
+//================================================================//
+
+// 1. Enums for Status Management
+// These ensure consistent state management across your dashboard.
+enum ProjectStatus {
+  ACTIVE
+  COMPLETED
+  ON_HOLD
+  ARCHIVED
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  DONE
+  BLOCKED
+}
+
+// 2. User Model
+// Represents team members who can be assigned to projects and tasks.
+model User {
+  id       Int     @id @default(autoincrement())
+  email    String  @unique
+  name     String?
+  password String // IMPORTANT: Always hash passwords before storing them.
+  avatar   String? // URL to a profile picture.
+
+  // Relations
+  projects      Project[] @relation("ProjectMembers")
+  assignedTasks Task[]
+  comments      Comment[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-// 4. Define the Attendee model
-// This model represents a person who has registered for an event.
-// The data fields directly correspond to your form and API route.
-model Attendee {
-  id           Int     @id @default(autoincrement())
-  name         String
-  email        String  @unique // Each attendee's email must be unique.
-  company      String
-  role         String
-  dietaryNeeds String? // The '?' makes this field optional.
+// 3. Project Model
+// The central model for tracking a project's lifecycle.
+model Project {
+  id          Int           @id @default(autoincrement())
+  name        String
+  description String?
+  status      ProjectStatus @default(ACTIVE)
 
-  // Relation: Each attendee belongs to one event.
-  event   Event @relation(fields: [eventId], references: [id])
-  eventId Int // Foreign key to link to the Event model.
+  // Relations
+  members   User[]     @relation("ProjectMembers")
+  tasks     Task[]
+  resources Resource[]
+  comments  Comment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// 4. Task Model
+// Represents a single to-do item within a project.
+model Task {
+  id          Int        @id @default(autoincrement())
+  title       String
+  description String?
+  status      TaskStatus @default(TODO)
+  dueDate     DateTime?
+
+  // Relations
+  project    Project   @relation(fields: [projectId], references: [id])
+  projectId  Int
+  assignee   User?     @relation(fields: [assigneeId], references: [id])
+  assigneeId Int?
+  comments   Comment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// 5. Resource Model
+// For uploading screenshots, notes, documents, etc., associated with a project.
+model Resource {
+  id          Int     @id @default(autoincrement())
+  title       String
+  url         String // URL to the file stored in a service like S3 or Cloudinary.
+  type        String // E.g., "IMAGE", "NOTE", "PDF" to help render it correctly.
+  description String?
+
+  // Relation
+  project   Project @relation(fields: [projectId], references: [id])
+  projectId Int
+
+  createdAt DateTime @default(now())
+}
+
+// 6. Comment Model
+// Enables threaded conversations on projects or specific tasks.
+model Comment {
+  id      Int    @id @default(autoincrement())
+  content String
+
+  // Relations
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
+  project   Project? @relation(fields: [projectId], references: [id])
+  projectId Int?
+  task      Task?    @relation(fields: [taskId], references: [id])
+  taskId    Int?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
