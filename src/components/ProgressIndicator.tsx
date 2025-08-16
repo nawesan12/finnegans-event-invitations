@@ -1,5 +1,7 @@
 "use client";
 
+import { motion } from "framer-motion";
+
 export default function ProgressIndicator({
   currentStep,
 }: {
@@ -23,9 +25,23 @@ export default function ProgressIndicator({
     <div className="hidden md:flex flex-col justify-center items-center h-full">
       <div className="flex flex-col gap-[140px] z-20">
         {[1, 2, 3].map((step) => (
-          <div key={step} className={getStepClass(step)}>
+          <motion.div
+            key={step}
+            className={getStepClass(step)}
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{
+              opacity: 1,
+              scale: step === currentStep ? [1, 1.2, 1] : 1,
+            }}
+            transition={{
+              duration: step === currentStep ? 0.6 : 0.4,
+              ease: "easeOut",
+              repeat: step === currentStep ? Infinity : 0,
+              repeatDelay: step === currentStep ? 1.5 : 0,
+            }}
+          >
             {step}
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>

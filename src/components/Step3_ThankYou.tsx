@@ -1,51 +1,82 @@
 "use client";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 export default function Step3_ThankYou() {
   return (
-    <div>
-      <h1 className="lg:text-[80px] text-5xl md:text-6xl font-semibold text-white mb-8 w-full leading-12">
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -30 }}
+      transition={{ duration: 0.6 }}
+      className="space-y-8"
+    >
+      <motion.h1
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2, duration: 0.6 }}
+        className="lg:text-[80px] text-5xl md:text-6xl font-semibold text-white mb-8 w-full leading-12"
+      >
         <span className="text-7xl md:text-9xl font-medium font-bright-clones relative top-3">
           Listo!
         </span>{" "}
         Te esperamos <br /> para disfrutar <i>juntos</i>.
-      </h1>
+      </motion.h1>
 
       {/* Info Bubbles */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-12 md:mb-8 w-full">
-        <div className="w-full   relative overflow-hidden aspect-square max-h-24">
-          <Image
-            src="/final-fecha.png"
-            alt="Calendar Icon"
-            fill
-            className="object-contain rounded-3xl shadow-xs overflow-hidden"
-          />
-        </div>
-
-        <div className="w-full   relative overflow-hidden aspect-square max-h-24">
-          <Image
-            src="/final-hora.png"
-            alt="Time Icon"
-            fill
-            className="object-contain rounded-3xl shadow-xs overflow-hidden"
-          />
-        </div>
-
-        <a
-          href="https://www.google.com/maps/place/Santos+Dumont+4080,+C1427EIN+Cdad.+Aut%C3%B3noma+de+Buenos+Aires/@-34.5889014,-58.4525789,17z"
-          className="w-full   relative overflow-hidden aspect-square max-h-24"
-        >
-          <Image
-            src="/final-ubi.png"
-            alt="Location Icon"
-            fill
-            className="object-contain rounded-3xl shadow-xs overflow-hidden"
-          />
-        </a>
-      </div>
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={{
+          hidden: {},
+          visible: { transition: { staggerChildren: 0.2 } },
+        }}
+        className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-12 md:mb-8 w-full"
+      >
+        {[
+          { src: "/final-fecha.png", alt: "Calendar Icon", href: null },
+          { src: "/final-hora.png", alt: "Time Icon", href: null },
+          {
+            src: "/final-ubi.png",
+            alt: "Location Icon",
+            href: "https://www.google.com/maps/place/Santos+Dumont+4080,+C1427EIN+Cdad.+Aut%C3%B3noma+de+Buenos+Aires/@-34.5889014,-58.4525789,17z",
+          },
+        ].map((item, i) => {
+          const content = (
+            <motion.div
+              key={i}
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0 },
+              }}
+              transition={{ duration: 0.5 }}
+              className="w-full relative overflow-hidden aspect-square max-h-24"
+            >
+              <Image
+                src={item.src}
+                alt={item.alt}
+                fill
+                className="object-contain rounded-3xl shadow-xs overflow-hidden"
+              />
+            </motion.div>
+          );
+          return item.href ? (
+            <a key={i} href={item.href}>
+              {content}
+            </a>
+          ) : (
+            content
+          );
+        })}
+      </motion.div>
 
       {/* Footer */}
-      <div className="flex flex-col sm:flex-row justify-between items-center w-full gap-4">
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6, duration: 0.6 }}
+        className="flex flex-col sm:flex-row justify-between items-center w-full gap-4"
+      >
         <Image
           src="/finnegans.svg"
           alt="Finnegans Logo"
@@ -60,20 +91,20 @@ export default function Step3_ThankYou() {
             alt="Finnegans Logo"
             width={400}
             height={200}
-            className="aspect-auto h-16 mx-0 px-0 max-w-max "
+            className="aspect-auto h-16 mx-0 px-0 max-w-max"
           />
 
           {/* Overlay tooltip */}
           <div
             className="absolute inset-0 flex items-center justify-center
-                          backdrop-blur-md bg-white/20 rounded-full border-2 border-white
-                          text-white font-semibold text-xl px-4 py-1
-                          opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none"
+                        backdrop-blur-md bg-white/20 rounded-full border-2 border-white
+                        text-white font-semibold text-xl px-4 py-1
+                        opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none"
           >
             Sin spoilers!
           </div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }

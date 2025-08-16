@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 export default function InfoSidebar() {
   const items = [
@@ -27,7 +28,15 @@ export default function InfoSidebar() {
     <div className="hidden md:flex items-center relative -left-4 h-full">
       <aside className="relative flex flex-col gap-6 z-20 justify-center h-full">
         {items.map((item, index) => {
-          const content = <IconBlock icon={item.icon} label={item.label} />;
+          const content = (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.15, duration: 0.5 }}
+            >
+              <IconBlock icon={item.icon} label={item.label} />
+            </motion.div>
+          );
 
           return item.href ? (
             <a
