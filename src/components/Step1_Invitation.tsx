@@ -53,7 +53,7 @@ export default function Step1Invitation({ onYes, onNo }: Step1InvitationProps) {
 
       {/* Buttons */}
       <motion.div
-        className="flex items-center justify-center md:justify-start lg:gap-6"
+        className="flex items-center justify-center md:justify-start gap-6"
         variants={{
           hidden: { opacity: 0, y: 20 },
           visible: { opacity: 1, y: 0 },
@@ -63,7 +63,7 @@ export default function Step1Invitation({ onYes, onNo }: Step1InvitationProps) {
           whileHover={{ scale: 1.08 }}
           whileTap={{ scale: 0.95 }}
           onClick={onYes}
-          className="border-white/80 border-2 border-t-0 border-b-0 cursor-pointer font-semibold text-2xl py-3 px-6 rounded-full bg-white/40 backdrop-blur-md text-white shadow-lg"
+          className="border-white/80 border-2 border-t-0 border-b-0 cursor-pointer font-semibold text-xl md:text-2xl py-3 px-6 rounded-full bg-white/40 backdrop-blur-md text-white shadow-lg"
         >
           Obvio que si!
         </motion.button>
@@ -71,7 +71,7 @@ export default function Step1Invitation({ onYes, onNo }: Step1InvitationProps) {
           whileHover={{ scale: 1.08 }}
           whileTap={{ scale: 0.95 }}
           onClick={onNo}
-          className="border-white/80 border-2 border-t-0 border-b-0 cursor-pointer font-semibold text-2xl py-3 px-6 rounded-full bg-white/40 backdrop-blur-md text-white shadow-lg"
+          className="border-white/80 border-2 border-t-0 border-b-0 cursor-pointer font-semibold text-xl md:text-2xl py-3 px-6 rounded-full bg-white/40 backdrop-blur-md text-white shadow-lg"
         >
           No puedo :(
         </motion.button>
