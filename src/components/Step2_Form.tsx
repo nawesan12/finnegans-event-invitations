@@ -49,6 +49,13 @@ export default function Step2_Form({ onSubmit }: { onSubmit: () => void }) {
     visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
   };
 
+  const inputLabels = {
+    name: "Nombre",
+    email: "Email",
+    company: "Empresa",
+    role: "Rol",
+  };
+
   return (
     <motion.div
       initial="hidden"
@@ -78,9 +85,8 @@ export default function Step2_Form({ onSubmit }: { onSubmit: () => void }) {
                   htmlFor={field}
                   className="block text-lg font-medium text-white mb-2"
                 >
-                  {field === "name"
-                    ? "Nombre y Apellido"
-                    : field.charAt(0).toUpperCase() + field.slice(1)}
+                  {/*@ts-expect-error bla*/}
+                  {inputLabels[field as string]}
                 </label>
                 <input
                   type={field === "email" ? "email" : "text"}

@@ -24,7 +24,7 @@ export default function Step1Invitation({ onYes, onNo }: Step1InvitationProps) {
     >
       {/* Logo */}
       <motion.div
-        className="inline-flex max-w-max items-center relative -left-2"
+        className="inline-flex max-w-max items-center relative px-2 md:px-0 -left-2"
         variants={{
           hidden: { opacity: 0, y: 20 },
           visible: { opacity: 1, y: 0 },
@@ -35,25 +35,25 @@ export default function Step1Invitation({ onYes, onNo }: Step1InvitationProps) {
           alt="Finnegans Logo"
           width={70}
           height={70}
-          className="rounded-full h-[70px] w-auto"
+          className="rounded-full h-[74px] w-auto relative -top-3"
           priority
         />
       </motion.div>
 
       {/* Title */}
       <motion.h1
-        className="lg:text-[101px] text-5xl md:text-8xl font-semibold text-white lg:mb-10 text-shadow-xs text-left w-full"
+        className="lg:text-[101px] text-6xl leading-13 md:leading-none px-4 md:px-0 md:text-8xl font-semibold text-white lg:mb-10 text-shadow-xs text-left w-full"
         variants={{
           hidden: { opacity: 0, y: 20 },
           visible: { opacity: 1, y: 0 },
         }}
       >
-        Comienza una <br /> nueva era ¿venís?
+        Comienza nuestra <br /> <i>nueva</i> era ¿venís?
       </motion.h1>
 
       {/* Buttons */}
       <motion.div
-        className="flex items-center justify-center md:justify-start gap-6"
+        className="flex items-center justify-center md:justify-start gap-6 px-6 md:px-0 relative top-4 md:top-0"
         variants={{
           hidden: { opacity: 0, y: 20 },
           visible: { opacity: 1, y: 0 },
@@ -63,7 +63,7 @@ export default function Step1Invitation({ onYes, onNo }: Step1InvitationProps) {
           whileHover={{ scale: 1.08 }}
           whileTap={{ scale: 0.95 }}
           onClick={onYes}
-          className="border-white/80 border-2 border-t-0 border-b-0 cursor-pointer font-semibold text-xl md:text-2xl py-3 px-6 rounded-full bg-white/40 backdrop-blur-md text-white shadow-lg"
+          className="border-white/80 whitespace-nowrap border-2 border-t-0 border-b-0 cursor-pointer font-semibold text-xl md:text-3xl py-3 px-6 rounded-full bg-white/40 backdrop-blur-md text-white shadow-lg"
         >
           Obvio que si!
         </motion.button>
@@ -71,7 +71,7 @@ export default function Step1Invitation({ onYes, onNo }: Step1InvitationProps) {
           whileHover={{ scale: 1.08 }}
           whileTap={{ scale: 0.95 }}
           onClick={onNo}
-          className="border-white/80 border-2 border-t-0 border-b-0 cursor-pointer font-semibold text-xl md:text-2xl py-3 px-6 rounded-full bg-white/40 backdrop-blur-md text-white shadow-lg"
+          className="border-white/80 whitespace-nowrap border-2 border-t-0 border-b-0 cursor-pointer font-semibold text-xl md:text-3xl py-3 px-6 rounded-full bg-white/40 backdrop-blur-md text-white shadow-lg"
         >
           No puedo :(
         </motion.button>

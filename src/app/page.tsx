@@ -50,23 +50,27 @@ export default function Home() {
 
   return (
     <>
-      <div className="relative w-full h-screen md:grid md:grid-cols-[auto_1fr_auto] md:gap-8 lg:gap-12 px-4 sm:px-8 lg:max-w-7xl mx-auto items-stretch">
+      <div className="relative w-full h-screen md:grid md:grid-cols-[auto_1fr_auto] md:gap-8 lg:gap-12 px-4 sm:px-8 lg:max-w-7xl mx-auto items-stretch overflow-hidden">
         <ProgressIndicator currentStep={currentStep} />
 
         {/* Main Content Area */}
-        <div className="flex items-center h-full">
+        <div className="flex flex-col items-center h-full">
           <div className="z-20 w-full relative min-h-[450px] text-center md:text-left flex flex-col justify-center h-full">
             {renderStep()}
+
+            {/* Step 1 horizontal InfoSidebar */}
+            {currentStep === 1 && <InfoSidebar horizontal />}
           </div>
         </div>
 
-        {currentStep != 3 && <InfoSidebar />}
+        {/* Original desktop sidebar */}
+        {currentStep !== 3 && <InfoSidebar />}
       </div>
 
       {/* Message Box */}
       <div
-        className={`fixed top-8 left-1/2 -translate-x-1/2 py-3 px-6 rounded-xl bg-slate-800 text-white text-base shadow-lg z-50 transition-all duration-300 pointer-events-none ${
-          message.show ? "opacity-100 visible top-12" : "opacity-0 invisible"
+        className={`fixed top-8 left-1/2 -translate-x-1/2 py-3 px-6 rounded-xl bg-[#04102D] text-white text-base shadow-lg z-50 transition-all duration-300 pointer-events-none ${
+          message.show ? "opacity-100 visible top-28" : "opacity-0 invisible"
         }`}
       >
         {message.text}

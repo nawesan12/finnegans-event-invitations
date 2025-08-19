@@ -9,17 +9,6 @@ datasource db {
   relationMode = "prisma"
 }
 
-//================================================================//
-// CORE EVENT MODELS (Existing)
-//================================================================//
-
-enum EventStatus {
-  UPCOMING
-  COMPLETED
-  PLANNING
-  CANCELED
-}
-
 model Event {
   id        Int         @id @default(autoincrement())
   name      String
@@ -27,9 +16,9 @@ model Event {
   location  String
   capacity  Int
   status    EventStatus @default(PLANNING)
-  attendees Attendee[]
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
+  attendees Attendee[]
 }
 
 model Attendee {
@@ -39,18 +28,93 @@ model Attendee {
   company      String
   role         String
   dietaryNeeds String?
-  event        Event    @relation(fields: [eventId], references: [id])
   eventId      Int
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  event        Event    @relation(fields: [eventId], references: [id])
 }
 
-//================================================================//
-// PROJECT MANAGEMENT MODELS (New)
-//================================================================//
+model User {
+  id            Int       @id @default(autoincrement())
+  email         String    @unique
+  name          String?
+  password      String
+  avatar        String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  projects      Project[] @relation("ProjectMembers")
+  assignedTasks Task[]
+  comments      Comment[]
+}
 
-// 1. Enums for Status Management
-// These ensure consistent state management across your dashboard.
+model Project {
+  id          Int           @id @default(autoincrement())
+  name        String
+  description String?
+  status      ProjectStatus @default(ACTIVE)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  members     User[]        @relation("ProjectMembers")
+  tasks       Task[]
+  resources   Resource[]
+  comments    Comment[]
+}
+
+model Task {
+  id          Int        @id @default(autoincrement())
+  title       String
+  description String?
+  status      TaskStatus @default(TODO)
+  dueDate     DateTime?
+  projectId   Int
+  assigneeId  Int?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  project     Project    @relation(fields: [projectId], references: [id])
+  assignee    User?      @relation(fields: [assigneeId], references: [id])
+  comments    Comment[]
+}
+
+model Resource {
+  id          Int      @id @default(autoincrement())
+  title       String
+  url         String
+  type        String
+  description String?
+  projectId   Int
+  createdAt   DateTime @default(now())
+  project     Project  @relation(fields: [projectId], references: [id])
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  content   String
+  authorId  Int
+  projectId Int?
+  taskId    Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  author    User     @relation(fields: [authorId], references: [id])
+  project   Project? @relation(fields: [projectId], references: [id])
+  task      Task?    @relation(fields: [taskId], references: [id])
+}
+
+model ProjectMembers {
+  A Int
+  B Int
+
+  @@id([A, B], map: "_ProjectMembers_AB_pkey")
+  @@index([B], map: "_ProjectMembers_B_index")
+  @@map("_ProjectMembers")
+}
+
+enum EventStatus {
+  UPCOMING
+  COMPLETED
+  PLANNING
+  CANCELED
+}
+
 enum ProjectStatus {
   ACTIVE
   COMPLETED
@@ -63,94 +127,4 @@ enum TaskStatus {
   IN_PROGRESS
   DONE
   BLOCKED
-}
-
-// 2. User Model
-// Represents team members who can be assigned to projects and tasks.
-model User {
-  id       Int     @id @default(autoincrement())
-  email    String  @unique
-  name     String?
-  password String // IMPORTANT: Always hash passwords before storing them.
-  avatar   String? // URL to a profile picture.
-
-  // Relations
-  projects      Project[] @relation("ProjectMembers")
-  assignedTasks Task[]
-  comments      Comment[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-// 3. Project Model
-// The central model for tracking a project's lifecycle.
-model Project {
-  id          Int           @id @default(autoincrement())
-  name        String
-  description String?
-  status      ProjectStatus @default(ACTIVE)
-
-  // Relations
-  members   User[]     @relation("ProjectMembers")
-  tasks     Task[]
-  resources Resource[]
-  comments  Comment[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-// 4. Task Model
-// Represents a single to-do item within a project.
-model Task {
-  id          Int        @id @default(autoincrement())
-  title       String
-  description String?
-  status      TaskStatus @default(TODO)
-  dueDate     DateTime?
-
-  // Relations
-  project    Project   @relation(fields: [projectId], references: [id])
-  projectId  Int
-  assignee   User?     @relation(fields: [assigneeId], references: [id])
-  assigneeId Int?
-  comments   Comment[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-// 5. Resource Model
-// For uploading screenshots, notes, documents, etc., associated with a project.
-model Resource {
-  id          Int     @id @default(autoincrement())
-  title       String
-  url         String // URL to the file stored in a service like S3 or Cloudinary.
-  type        String // E.g., "IMAGE", "NOTE", "PDF" to help render it correctly.
-  description String?
-
-  // Relation
-  project   Project @relation(fields: [projectId], references: [id])
-  projectId Int
-
-  createdAt DateTime @default(now())
-}
-
-// 6. Comment Model
-// Enables threaded conversations on projects or specific tasks.
-model Comment {
-  id      Int    @id @default(autoincrement())
-  content String
-
-  // Relations
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int
-  project   Project? @relation(fields: [projectId], references: [id])
-  projectId Int?
-  task      Task?    @relation(fields: [taskId], references: [id])
-  taskId    Int?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }

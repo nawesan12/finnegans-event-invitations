@@ -15,11 +15,12 @@ export default function Step3_ThankYou() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2, duration: 0.6 }}
-        className="lg:text-[80px] text-5xl md:text-6xl font-semibold text-white mb-8 w-full leading-12"
+        className="lg:text-[80px] text-left px-6 lg:px-0 text-5xl md:text-6xl font-semibold text-white mb-14 w-full leading-[52px] md:leading-12"
       >
-        <span className="text-7xl md:text-9xl font-medium font-bright-clones relative top-3">
+        <span className="text-8xl md:text-9xl font-medium font-bright-clones relative top-4 md:top-3">
           Listo!
         </span>{" "}
+        <br className="md:hidden block" />
         Te esperamos <br /> para disfrutar <i>juntos</i>.
       </motion.h1>
 
@@ -34,10 +35,14 @@ export default function Step3_ThankYou() {
         className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-12 md:mb-8 w-full"
       >
         {[
-          { src: "/final-fecha.png", alt: "Calendar Icon", href: null },
-          { src: "/final-hora.png", alt: "Time Icon", href: null },
           {
-            src: "/final-ubi.png",
+            src: "/pantalla3/fecha-mobile.png",
+            alt: "Calendar Icon",
+            href: "https://www.google.com/calendar/render?action=TEMPLATE&text=Evento+Finnegans&dates=20250925T213000Z/20250925T253000Z&details=Finnegans&location=Santos+Dumont+4080",
+          },
+          { src: "/pantalla3/reloj-mobile.png", alt: "Time Icon", href: null },
+          {
+            src: "/pantalla3/ubicacion-mobile.png",
             alt: "Location Icon",
             href: "https://www.google.com/maps/place/Santos+Dumont+4080,+C1427EIN+Cdad.+Aut%C3%B3noma+de+Buenos+Aires/@-34.5889014,-58.4525789,17z",
           },
@@ -56,12 +61,12 @@ export default function Step3_ThankYou() {
                 src={item.src}
                 alt={item.alt}
                 fill
-                className="object-contain rounded-3xl shadow-xs overflow-hidden"
+                className="object-contain rounded-3xl overflow-hidden"
               />
             </motion.div>
           );
           return item.href ? (
-            <a key={i} href={item.href}>
+            <a key={i} target="_blank" href={item.href}>
               {content}
             </a>
           ) : (
@@ -75,14 +80,14 @@ export default function Step3_ThankYou() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6, duration: 0.6 }}
-        className="flex flex-col sm:flex-row justify-between items-center w-full gap-4"
+        className="flex flex-row justify-between items-center w-full gap-2 px-6 lg:px-0"
       >
         <Image
           src="/finnegans.svg"
           alt="Finnegans Logo"
           width={400}
           height={200}
-          className="aspect-auto h-8 mx-0 px-0 max-w-max lg:block hidden"
+          className="aspect-auto h-5 lg:h-8 mx-0 px-0 max-w-max"
         />
 
         <div className="relative group inline-flex">
@@ -91,7 +96,7 @@ export default function Step3_ThankYou() {
             alt="Finnegans Logo"
             width={400}
             height={200}
-            className="aspect-auto h-16 mx-0 px-0 max-w-max"
+            className="aspect-auto h-8 lg:h-16 mx-0 px-0 max-w-max"
           />
 
           {/* Overlay tooltip */}
