@@ -21,8 +21,8 @@ export default function Home() {
     }
   }, [message]);
 
-  const handleNoClick = () => {
-    setMessage({ text: "Qué lástima. ¡Te extrañaremos! 😢", show: true });
+  const showMessage = (text: string) => {
+    setMessage({ text, show: true });
   };
 
   const renderStep = () => {
@@ -31,18 +31,23 @@ export default function Home() {
         return (
           <Step1_Invitation
             onYes={() => setCurrentStep(2)}
-            onNo={handleNoClick}
+            onNo={() => showMessage("Qué lástima. ¡Te extrañaremos! 😢")}
           />
         );
       case 2:
-        return <Step2_Form onSubmit={() => setCurrentStep(3)} />;
+        return (
+          <Step2_Form
+            onSubmit={() => setCurrentStep(3)}
+            onError={showMessage}
+          />
+        );
       case 3:
         return <Step3_ThankYou />;
       default:
         return (
           <Step1_Invitation
             onYes={() => setCurrentStep(2)}
-            onNo={handleNoClick}
+            onNo={() => showMessage("Qué lástima. ¡Te extrañaremos! 😢")}
           />
         );
     }
