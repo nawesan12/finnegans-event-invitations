@@ -14,7 +14,6 @@ export default function InfoSidebar({ horizontal = false }: InfoSidebarProps) {
     {
       icon: "/ubicacion-color.svg",
       label: "Santos Dumont 4080",
-      href: "https://www.google.com/maps/place/Santos+Dumont+4080,+C1427EIN+Cdad.+Aut%C3%B3noma+de+Buenos+Aires/@-34.5889014,-58.4525789,17z",
     },
   ];
 
@@ -62,18 +61,7 @@ export default function InfoSidebar({ horizontal = false }: InfoSidebarProps) {
           </motion.div>
         );
 
-        return item.href ? (
-          <a
-            key={index}
-            href={item.href}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {content}
-          </a>
-        ) : (
-          content
-        );
+        return content;
       })}
     </div>
   ) : (
@@ -91,18 +79,7 @@ export default function InfoSidebar({ horizontal = false }: InfoSidebarProps) {
             </motion.div>
           );
 
-          return item.href ? (
-            <a
-              key={index}
-              href={item.href}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {content}
-            </a>
-          ) : (
-            <div key={index}>{content}</div>
-          );
+          return <div key={index}>{content}</div>;
         })}
       </aside>
     </div>
