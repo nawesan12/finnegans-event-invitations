@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export default function Step2_Form({ onSubmit }: { onSubmit: () => void }) {
   const [hasAllergy, setHasAllergy] = useState<string | null>(null);
-  const [selectedDiet, setSelectedDiet] = useState<string | null>(null);
+  const [selectedDiets, setSelectedDiets] = useState<string[]>([]);
   const [customDiet, setCustomDiet] = useState<string>("");
   const [formValues, setFormValues] = useState({
     name: "",
@@ -13,12 +13,25 @@ export default function Step2_Form({ onSubmit }: { onSubmit: () => void }) {
     role: "",
   });
 
+  const handleDietToggle = (diet: string) => {
+    setHasAllergy("yes"); // si selecciona una dieta, marcamos "sí"
+    setSelectedDiets((prev) =>
+      prev.includes(diet) ? prev.filter((d) => d !== diet) : [...prev, diet],
+    );
+  };
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    if (selectedDiet === "otra") formData.set("diet", customDiet.trim());
+
+    // Concatenamos dietas seleccionadas
+    const diets = [...selectedDiets];
+    if (customDiet.trim()) diets.push(`otra: ${customDiet.trim()}`);
+    formData.set("diet", diets.join("-"));
+
     const data = Object.fromEntries(formData.entries());
     console.log(data);
+
     try {
       const response = await fetch("/api/attendees", {
         method: "POST",
@@ -75,6 +88,7 @@ export default function Step2_Form({ onSubmit }: { onSubmit: () => void }) {
         className="px-8 rounded-3xl bg-white/40 shadow-md backdrop-blur-lg border-2 border-white/30"
       >
         <form onSubmit={handleSubmit} className="space-y-6 relative py-6 pb-4">
+          {/* Campos principales */}
           <motion.div
             variants={itemVariants}
             className="grid grid-cols-1 md:grid-cols-2 gap-6"
@@ -110,7 +124,7 @@ export default function Step2_Form({ onSubmit }: { onSubmit: () => void }) {
             ))}
           </motion.div>
 
-          {/* Allergy Question */}
+          {/* Alergias */}
           <motion.div
             variants={itemVariants}
             className="flex items-center lg:flex-row flex-col gap-4"
@@ -123,7 +137,13 @@ export default function Step2_Form({ onSubmit }: { onSubmit: () => void }) {
                 <motion.button
                   key={option}
                   type="button"
-                  onClick={() => setHasAllergy(option)}
+                  onClick={() => {
+                    setHasAllergy(option);
+                    if (option === "no") {
+                      setSelectedDiets([]);
+                      setCustomDiet("");
+                    }
+                  }}
                   whileTap={{ scale: 0.95 }}
                   className={`py-2 px-6 rounded-full text-md font-semibold transition-all ${
                     hasAllergy === option
@@ -131,65 +151,69 @@ export default function Step2_Form({ onSubmit }: { onSubmit: () => void }) {
                       : "bg-white/20 text-white border border-white/30"
                   }`}
                 >
-                  {option === "yes" ? "si" : "no"}
+                  {option === "yes" ? "sí" : "no"}
                 </motion.button>
               ))}
             </div>
           </motion.div>
 
-          {/* Diet Options */}
-          <motion.div variants={itemVariants} className="space-y-4">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {["Vegetariana", "Gluten Free", "Vegana"].map((diet) => (
-                <motion.label
-                  key={diet}
-                  className="flex items-center gap-3 cursor-pointer p-3 rounded-full bg-transparent transition-all"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+          {/* Dietas */}
+          {hasAllergy !== "no" && (
+            <motion.div variants={itemVariants} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                {["Vegetariana", "Gluten Free", "Vegana"].map((diet) => {
+                  const value = diet.toLowerCase().replace(" ", "-");
+                  return (
+                    <motion.label
+                      key={diet}
+                      className={`flex items-center gap-3 cursor-pointer p-3 rounded-full transition-all ${
+                        selectedDiets.includes(value)
+                          ? "bg-transparent text-white"
+                          : "bg-transparent text-white"
+                      }`}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <input
+                        type="checkbox"
+                        name="diet"
+                        value={value}
+                        checked={selectedDiets.includes(value)}
+                        onChange={() => handleDietToggle(value)}
+                        className="w-5 h-5 appearance-none rounded-full border border-white/50 bg-white/20 backdrop-blur-md checked:bg-[#4bc3fe] checked:border-[#4bc3fe] transition-all cursor-pointer"
+                      />
+                      <span>{diet}</span>
+                    </motion.label>
+                  );
+                })}
+
+                {/* Opción Otra */}
+                <motion.div
+                  className="flex items-center gap-3 p-3 rounded-full bg-transparent border-white transition-all"
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
                 >
                   <input
-                    type="radio"
-                    name="diet"
-                    value={diet.toLowerCase().replace(" ", "-")}
-                    checked={
-                      selectedDiet === diet.toLowerCase().replace(" ", "-")
-                    }
-                    onChange={() =>
-                      setSelectedDiet(diet.toLowerCase().replace(" ", "-"))
-                    }
-                    className="w-5 h-5 appearance-none rounded-full border border-white/50 bg-white/20 backdrop-blur-md checked:bg-[#4bc3fe] checked:border-[#4bc3fe] transition-all cursor-pointer"
+                    type="text"
+                    name="custom-diet"
+                    placeholder="Otra"
+                    value={customDiet}
+                    onChange={(e) => {
+                      setCustomDiet(e.target.value);
+                      if (e.target.value.trim()) setHasAllergy("yes");
+                    }}
+                    className={`flex-1 px-3 py-1 rounded-full text-lg font-medium backdrop-blur-xs focus:outline-none ${
+                      customDiet
+                        ? "bg-white text-black placeholder-black/50"
+                        : "bg-transparent text-white placeholder-white/70"
+                    }`}
                   />
-                  <span className="text-white font-semibold select-none">
-                    {diet}
-                  </span>
-                </motion.label>
-              ))}
+                </motion.div>
+              </div>
+            </motion.div>
+          )}
 
-              {/* Opción Otra con input */}
-              <motion.div
-                className="flex items-center gap-3 p-3 lg:w-full max-w-[40px] rounded-full bg-transparent border-white transition-all"
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-              >
-                <input
-                  type="text"
-                  name="diet"
-                  placeholder="Otra"
-                  value={customDiet}
-                  onChange={(e) => {
-                    setCustomDiet(e.target.value);
-                    setSelectedDiet(e.target.value ? "otra" : null);
-                  }}
-                  className={`lg:relative lg:right-4 flex-1 px-3 py-1 max-w-32 lg:max-w-none rounded-full  backdrop-blur-xs text-black placeholder-white text-lg focus:outline-none font-medium ${
-                    customDiet
-                      ? "bg-white text-black placeholder-black/50"
-                      : "bg-transparent text-white placeholder-white/70"
-                  }`}
-                />
-              </motion.div>
-            </div>
-          </motion.div>
-
+          {/* Botón submit */}
           <motion.div
             variants={itemVariants}
             className="flex justify-end pt-8 absolute -bottom-6 right-10"
