@@ -1,4 +1,5 @@
 import { db } from "@/lib/prisma";
+import { sendEmail } from "@/lib/mail";
 import { NextRequest, NextResponse } from "next/server";
 
 interface Attendee {
@@ -61,6 +62,13 @@ export async function POST(request: NextRequest) {
     });
 
     console.log("New Registration Received and Stored:", newAttendee);
+
+    // Send confirmation email to attendee
+    await sendEmail(
+      email,
+      "Confirmación de registro",
+      `Hola ${name}, tu registro al evento ha sido recibido. ¡Gracias!`,
+    );
 
     return NextResponse.json(
       { message: "Registration successful!", data: newAttendee },
