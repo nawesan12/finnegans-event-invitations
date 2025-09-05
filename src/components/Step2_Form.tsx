@@ -1,8 +1,13 @@
 "use client";
 import { FormEvent, useState } from "react";
 import { motion } from "framer-motion";
-
-export default function Step2_Form({ onSubmit }: { onSubmit: () => void }) {
+export default function Step2_Form({
+  onSubmit,
+  showMessage,
+}: {
+  onSubmit: () => void;
+  showMessage: (msg: string) => void;
+}) {
   const [hasAllergy, setHasAllergy] = useState<string | null>(null);
   const [selectedDiets, setSelectedDiets] = useState<string[]>([]);
   const [customDiet, setCustomDiet] = useState<string>("");
@@ -22,9 +27,26 @@ export default function Step2_Form({ onSubmit }: { onSubmit: () => void }) {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const { name, email, company, role } = formValues;
+    if (!name || !email || !company || !role) {
+      showMessage("Por favor completa todos los campos.");
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      showMessage("Por favor ingresa un email válido.");
+      return;
+    }
+
+    if (hasAllergy === null) {
+      showMessage("Por favor indica si tienes alguna alergia.");
+      return;
+    }
+
     const formData = new FormData(e.currentTarget);
 
-    // Concatenamos dietas seleccionadas
     const diets = [...selectedDiets];
     if (customDiet.trim()) diets.push(`otra: ${customDiet.trim()}`);
     formData.set("diet", diets.join("-"));
@@ -41,8 +63,12 @@ export default function Step2_Form({ onSubmit }: { onSubmit: () => void }) {
       if (response.ok) {
         console.log("Form submitted successfully!");
         onSubmit();
-      } else console.error("Form submission failed.", response);
+      } else {
+        showMessage("No pudimos enviar tus datos. Intenta nuevamente.");
+        console.error("Form submission failed.", response);
+      }
     } catch (error) {
+      showMessage("Ocurrió un error al enviar el formulario.");
       console.error("An error occurred:", error);
     }
   };
@@ -87,7 +113,11 @@ export default function Step2_Form({ onSubmit }: { onSubmit: () => void }) {
         variants={itemVariants}
         className="px-8 rounded-3xl bg-white/40 shadow-md backdrop-blur-lg border-2 border-white/30"
       >
-        <form onSubmit={handleSubmit} className="space-y-6 relative py-6 pb-4">
+        <form
+          onSubmit={handleSubmit}
+          noValidate
+          className="space-y-6 relative py-6 pb-4"
+        >
           {/* Campos principales */}
           <motion.div
             variants={itemVariants}
@@ -106,7 +136,6 @@ export default function Step2_Form({ onSubmit }: { onSubmit: () => void }) {
                   type={field === "email" ? "email" : "text"}
                   id={field}
                   name={field}
-                  required
                   value={formValues[field as keyof typeof formValues]}
                   onChange={(e) =>
                     setFormValues((prev) => ({

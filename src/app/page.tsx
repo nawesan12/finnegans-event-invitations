@@ -11,6 +11,10 @@ export default function Home() {
   const [currentStep, setCurrentStep] = useState(1);
   const [message, setMessage] = useState({ text: "", show: false });
 
+  const showMessage = (text: string) => {
+    setMessage({ text, show: true });
+  };
+
   // Handle message display and timeout
   useEffect(() => {
     if (message.show) {
@@ -22,7 +26,7 @@ export default function Home() {
   }, [message]);
 
   const handleNoClick = () => {
-    setMessage({ text: "Qué lástima. ¡Te extrañaremos! 😢", show: true });
+    showMessage("Qué lástima. ¡Te extrañaremos! 😢");
   };
 
   const renderStep = () => {
@@ -35,7 +39,12 @@ export default function Home() {
           />
         );
       case 2:
-        return <Step2_Form onSubmit={() => setCurrentStep(3)} />;
+        return (
+          <Step2_Form
+            onSubmit={() => setCurrentStep(3)}
+            showMessage={showMessage}
+          />
+        );
       case 3:
         return <Step3_ThankYou />;
       default:
