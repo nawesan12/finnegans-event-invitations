@@ -1,5 +1,5 @@
 "use client";
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 export default function Step2_Form({
   onSubmit,
@@ -17,8 +17,16 @@ export default function Step2_Form({
     company: "",
     role: "",
   });
+  const [isCompleted, setIsCompleted] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsCompleted(localStorage.getItem("formCompleted") === "true");
+    }
+  }, []);
 
   const handleDietToggle = (diet: string) => {
+    if (isCompleted) return;
     setHasAllergy("yes"); // si selecciona una dieta, marcamos "sí"
     setSelectedDiets((prev) =>
       prev.includes(diet) ? prev.filter((d) => d !== diet) : [...prev, diet],
@@ -27,6 +35,7 @@ export default function Step2_Form({
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (isCompleted) return;
 
     const { name, email, company, role } = formValues;
     if (!name || !email || !company || !role) {
@@ -62,6 +71,10 @@ export default function Step2_Form({
       });
       if (response.ok) {
         console.log("Form submitted successfully!");
+        if (typeof window !== "undefined") {
+          localStorage.setItem("formCompleted", "true");
+        }
+        setIsCompleted(true);
         onSubmit();
       } else {
         showMessage("No pudimos enviar tus datos. Intenta nuevamente.");
@@ -124,7 +137,7 @@ export default function Step2_Form({
             className="grid grid-cols-1 md:grid-cols-2 gap-6"
           >
             {["name", "email", "company", "role"].map((field) => (
-              <div key={field}>
+              <div key={field} className="relative">
                 <label
                   htmlFor={field}
                   className="block text-lg font-medium text-white mb-2"
@@ -133,10 +146,15 @@ export default function Step2_Form({
                   {inputLabels[field as string]}
                 </label>
                 <input
+                  disabled={isCompleted}
                   type={field === "email" ? "email" : "text"}
                   id={field}
                   name={field}
-                  value={formValues[field as keyof typeof formValues]}
+                  value={
+                    isCompleted
+                      ? "COMPLETADO"
+                      : formValues[field as keyof typeof formValues]
+                  }
                   onChange={(e) =>
                     setFormValues((prev) => ({
                       ...prev,
@@ -147,7 +165,7 @@ export default function Step2_Form({
                     formValues[field as keyof typeof formValues]
                       ? "bg-white text-black placeholder-black/50"
                       : "bg-transparent text-white placeholder-white/70"
-                  }`}
+                  } ${isCompleted ? "bg-white/70 text-gray-700 text-center" : ""}`}
                 />
               </div>
             ))}
@@ -166,7 +184,9 @@ export default function Step2_Form({
                 <motion.button
                   key={option}
                   type="button"
+                  disabled={isCompleted}
                   onClick={() => {
+                    if (isCompleted) return;
                     setHasAllergy(option);
                     if (option === "no") {
                       setSelectedDiets([]);
@@ -178,7 +198,7 @@ export default function Step2_Form({
                     hasAllergy === option
                       ? "bg-white text-[#4bc3fe]"
                       : "bg-white/20 text-white border border-white/30"
-                  }`}
+                  } ${isCompleted ? "opacity-50 cursor-not-allowed" : ""}`}
                 >
                   {option === "yes" ? "sí" : "no"}
                 </motion.button>
@@ -199,7 +219,7 @@ export default function Step2_Form({
                         selectedDiets.includes(value)
                           ? "bg-transparent text-white"
                           : "bg-transparent text-white"
-                      }`}
+                      } ${isCompleted ? "opacity-50 cursor-not-allowed" : ""}`}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
@@ -207,6 +227,7 @@ export default function Step2_Form({
                         type="checkbox"
                         name="diet"
                         value={value}
+                        disabled={isCompleted}
                         checked={selectedDiets.includes(value)}
                         onChange={() => handleDietToggle(value)}
                         className="w-5 h-5 appearance-none rounded-full border border-white/50 bg-white/20 backdrop-blur-md checked:bg-[#4bc3fe] checked:border-[#4bc3fe] transition-all cursor-pointer"
@@ -218,15 +239,16 @@ export default function Step2_Form({
 
                 {/* Opción Otra */}
                 <motion.div
-                  className="flex items-center gap-3 p-3 rounded-full bg-transparent border-white transition-all"
+                  className="flex items-center gap-3 p-3 rounded-full bg-transparent border-white transition-all relative"
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
                 >
                   <input
                     type="text"
                     name="custom-diet"
-                    placeholder="Otra"
-                    value={customDiet}
+                    placeholder={isCompleted ? "" : "Otra"}
+                    disabled={isCompleted}
+                    value={isCompleted ? "COMPLETADO" : customDiet}
                     onChange={(e) => {
                       setCustomDiet(e.target.value);
                       if (e.target.value.trim()) setHasAllergy("yes");
@@ -235,7 +257,7 @@ export default function Step2_Form({
                       customDiet
                         ? "bg-white text-black placeholder-black/50"
                         : "bg-transparent text-white placeholder-white/70"
-                    }`}
+                    } ${isCompleted ? "bg-white/70 text-gray-700 text-center" : ""}`}
                   />
                 </motion.div>
               </div>
@@ -249,7 +271,8 @@ export default function Step2_Form({
           >
             <button
               type="submit"
-              className="py-2 px-6 border-2 border-white/30 rounded-full text-xl font-semibold bg-[#4bc3fe] text-white hover:bg-cyan-500 transition-colors"
+              disabled={isCompleted}
+              className="py-2 px-6 border-2 border-white/30 rounded-full text-xl font-semibold bg-[#4bc3fe] text-white hover:bg-cyan-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Enviar
             </button>
