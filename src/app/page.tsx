@@ -42,6 +42,7 @@ export default function Home() {
         return (
           <Step2_Form
             onSubmit={() => setCurrentStep(3)}
+            //@ts-expect-error bla
             showMessage={showMessage}
           />
         );
@@ -59,7 +60,7 @@ export default function Home() {
 
   return (
     <>
-      <div className="relative w-full h-screen md:grid md:grid-cols-[auto_1fr_auto] md:gap-8 lg:gap-12 px-4 sm:px-8 lg:max-w-7xl mx-auto items-stretch overflow-hidden">
+      <div className="relative w-full min-h-screen md:grid md:grid-cols-[auto_1fr_auto] md:gap-8 lg:gap-12 px-4 sm:px-8 lg:max-w-7xl mx-auto items-stretch overflow-hidden">
         <ProgressIndicator currentStep={currentStep} />
 
         {/* Main Content Area */}

@@ -24,7 +24,7 @@ export default function Step1Invitation({ onYes, onNo }: Step1InvitationProps) {
     >
       {/* Logo */}
       <motion.div
-        className="inline-flex max-w-max items-center relative px-2 md:px-0 -left-2"
+        className="inline-flex max-w-max items-center relative px-2 md:px-0 -left-4 md:-left-2 "
         variants={{
           hidden: { opacity: 0, y: 20 },
           visible: { opacity: 1, y: 0 },
@@ -53,7 +53,7 @@ export default function Step1Invitation({ onYes, onNo }: Step1InvitationProps) {
 
       {/* Buttons */}
       <motion.div
-        className="flex items-center justify-center md:justify-start gap-6 px-6 md:px-0 relative top-4 md:top-0"
+        className="flex items-center justify-center md:justify-start gap-2 px-6 md:px-0 relative top-4 md:top-0"
         variants={{
           hidden: { opacity: 0, y: 20 },
           visible: { opacity: 1, y: 0 },
