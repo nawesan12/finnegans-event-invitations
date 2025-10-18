@@ -35,7 +35,7 @@ export default function Step1Invitation({ onYes, onNo }: Step1InvitationProps) {
           alt="Finnegans Logo"
           width={70}
           height={70}
-          className="rounded-full h-[74px] w-auto relative -top-3"
+          className="rounded-full h-[44px] w-auto relative -top-3 px-4 py-2"
           priority
         />
       </motion.div>

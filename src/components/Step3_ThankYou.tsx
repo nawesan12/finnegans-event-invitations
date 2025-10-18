@@ -41,7 +41,7 @@ export default function Step3_ThankYou() {
           {
             src: "/pantalla3/fecha-mobile.png",
             alt: "Calendar Icon",
-            href: "https://www.google.com/calendar/render?action=TEMPLATE&text=Evento+Finnegans&dates=20250904T213000Z/20250904T253000Z&details=Finnegans&location=Santos+Dumont+4080",
+            href: "https://www.google.com/calendar/render?action=TEMPLATE&text=Evento+Finnegans&dates=20251114T210000Z/20251115T010000Z&details=Finnegans&location=Santos+Dumont+4080",
           },
           { src: "/pantalla3/reloj-mobile.png", alt: "Time Icon", href: null },
           {

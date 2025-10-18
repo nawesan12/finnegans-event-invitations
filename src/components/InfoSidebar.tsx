@@ -9,7 +9,7 @@ type InfoSidebarProps = {
 
 export default function InfoSidebar({ horizontal = false }: InfoSidebarProps) {
   const items = [
-    { icon: "/calendario-color.svg", label: "14 de Noviembre" },
+    { icon: "/calendario-color.svg", label: "14 de Noviembre", href: "" },
     { icon: "/reloj-color.svg", label: "18:00hs" },
     {
       icon: "/ubicacion-color.svg",
