@@ -31,7 +31,7 @@ export default function Step1Invitation({ onYes, onNo }: Step1InvitationProps) {
         }}
       >
         <Image
-          src="/logo-finnegans.svg"
+          src="/finnegans-blanco.png"
           alt="Finnegans Logo"
           width={70}
           height={70}

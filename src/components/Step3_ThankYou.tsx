@@ -92,35 +92,12 @@ export default function Step3_ThankYou() {
         >
           {/* Desktop: finnegans normal */}
           <Image
-            src="/finnegans.svg"
+            src="/finnegans-blanco.png"
             alt="Finnegans Logo"
             width={400}
             height={200}
             className="hidden lg:block aspect-auto h-8 mx-0 px-0 max-w-max"
           />
-        </div>
-
-        {/* RIGHT (Desktop only) */}
-        <div className="relative -left-10 -top-6 lg:top-0 lg:left-20 lg:flex lg:items-center lg:justify-end group">
-          <Image
-            src="/finnegans-2.svg"
-            alt="Finnegans Logo"
-            width={400}
-            height={200}
-            className="object-contain max-h-14 mx-0 px-0"
-          />
-          <div
-            className="absolute inset-0 flex items-center justify-center
-                       pointer-events-none opacity-0 group-hover:opacity-100
-                       transition-opacity duration-200"
-          >
-            <span
-              className="backdrop-blur-md text-center bg-white/20 rounded-full w-8/12 border-2 border-white
-                             text-white font-semibold text-xl px-0 py-1"
-            >
-              Sin spoilers!
-            </span>
-          </div>
         </div>
       </motion.div>
     </motion.div>
