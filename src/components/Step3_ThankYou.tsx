@@ -42,12 +42,19 @@ export default function Step3_ThankYou() {
             src: "/pantalla3/fecha-mobile.png",
             alt: "Calendar Icon",
             href: "https://www.google.com/calendar/render?action=TEMPLATE&text=Evento+Finnegans&dates=20251114T210000Z/20251115T010000Z&details=Finnegans&location=Santos+Dumont+4080",
+            title: "Agregar a mi calendario",
           },
-          { src: "/pantalla3/reloj-mobile.png", alt: "Time Icon", href: null },
+          {
+            src: "/pantalla3/reloj-mobile.png",
+            alt: "Time Icon",
+            href: null,
+            titulo: null,
+          },
           {
             src: "/pantalla3/ubicacion-mobile.png",
             alt: "Location Icon",
             href: "https://www.google.com/maps/place/Santos+Dumont+4080,+C1427EIN+Cdad.+Aut%C3%B3noma+de+Buenos+Aires/@-34.5889014,-58.4525789,17z",
+            title: "Ver en el mapa",
           },
         ].map((item, i) => {
           const content = (
@@ -59,6 +66,7 @@ export default function Step3_ThankYou() {
               }}
               transition={{ duration: 0.5 }}
               className="relative px-6 lg:px-0"
+              title={item.title || ""}
             >
               <Image
                 src={item.src}
