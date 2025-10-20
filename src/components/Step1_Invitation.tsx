@@ -10,7 +10,7 @@ type Step1InvitationProps = {
 export default function Step1Invitation({ onYes, onNo }: Step1InvitationProps) {
   return (
     <motion.div
-      className="flex flex-col gap-4 lg:gap-2"
+      className="flex flex-col gap-4 lg:gap-2 relative top-20 md:top-0"
       initial="hidden"
       animate="visible"
       variants={{
@@ -24,7 +24,7 @@ export default function Step1Invitation({ onYes, onNo }: Step1InvitationProps) {
     >
       {/* Logo */}
       <motion.div
-        className="inline-flex max-w-max items-center relative px-2 md:px-0 -left-4 md:-left-2 "
+        className="inline-flex max-w-max items-center bg-white/40 rounded-full -top-3 relative border-r border-white border-l  md:px-0  md:-left-2 "
         variants={{
           hidden: { opacity: 0, y: 20 },
           visible: { opacity: 1, y: 0 },
@@ -35,7 +35,7 @@ export default function Step1Invitation({ onYes, onNo }: Step1InvitationProps) {
           alt="Finnegans Logo"
           width={70}
           height={70}
-          className="rounded-full h-[44px] w-auto relative -top-3 px-4 py-2"
+          className="rounded-full h-[44px] w-auto  px-6 py-2"
           priority
         />
       </motion.div>

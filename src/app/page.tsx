@@ -69,7 +69,9 @@ export default function Home() {
             {renderStep()}
 
             {/* Step 1 horizontal InfoSidebar */}
-            {currentStep === 1 && <InfoSidebar horizontal />}
+            <div className="relative top-20 md:top-0">
+              {currentStep === 1 && <InfoSidebar horizontal />}
+            </div>
           </div>
         </div>
 

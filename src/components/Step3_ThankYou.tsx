@@ -39,13 +39,13 @@ export default function Step3_ThankYou() {
       >
         {[
           {
-            src: "/pantalla3/fecha-mobile.png",
+            src: "/fecha.png",
             alt: "Calendar Icon",
             href: "https://www.google.com/calendar/render?action=TEMPLATE&text=Evento+Finnegans&dates=20251114T210000Z/20251115T010000Z&details=Finnegans&location=Santos+Dumont+4080",
             title: "Agregar a mi calendario",
           },
           {
-            src: "/pantalla3/reloj-mobile.png",
+            src: "/hora.png",
             alt: "Time Icon",
             href: null,
             titulo: null,
