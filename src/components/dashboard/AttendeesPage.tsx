@@ -2,15 +2,22 @@
 import React, { useState, useMemo } from "react";
 import Image from "next/image";
 import { Card } from "./ui/Card";
+import { Button } from "./ui/Button";
 import { Event, Attendee } from "@/lib/types";
 
 interface AttendeesPageProps {
   events: Event[];
   attendees: Attendee[];
   isLoading: boolean;
+  onDelete: (attendeeId: number) => void;
 }
 
-export const AttendeesPage = ({ events, attendees, isLoading }: AttendeesPageProps) => {
+export const AttendeesPage = ({
+  events,
+  attendees,
+  isLoading,
+  onDelete,
+}: AttendeesPageProps) => {
   const [selectedEventId, setSelectedEventId] = useState<string>("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [dietaryFilter, setDietaryFilter] = useState("all");
@@ -86,6 +93,9 @@ export const AttendeesPage = ({ events, attendees, isLoading }: AttendeesPagePro
                 <th scope="col" className="px-6 py-3">
                   Dieta Especial
                 </th>
+                <th scope="col" className="px-6 py-3 text-right">
+                  Acciones
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -103,6 +113,9 @@ export const AttendeesPage = ({ events, attendees, isLoading }: AttendeesPagePro
                     </td>
                     <td className="px-6 py-4">
                       <div className="h-4 bg-white/10 rounded w-1/4 animate-pulse"></div>
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                      <div className="h-8 w-20 bg-white/10 rounded-lg animate-pulse"></div>
                     </td>
                   </tr>
                 ))}
@@ -146,8 +159,27 @@ export const AttendeesPage = ({ events, attendees, isLoading }: AttendeesPagePro
                         <span className="text-white/50">-</span>
                       )}
                     </td>
+                    <td className="px-6 py-4 text-right">
+                      <Button
+                        variant="danger"
+                        onClick={() => onDelete(attendee.id)}
+                        className="px-3 py-1 text-xs"
+                      >
+                        Eliminar
+                      </Button>
+                    </td>
                   </tr>
                 ))}
+              {!isLoading && filteredAttendees.length === 0 && (
+                <tr>
+                  <td
+                    colSpan={5}
+                    className="px-6 py-8 text-center text-white/60"
+                  >
+                    No se encontraron asistentes para los filtros actuales.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

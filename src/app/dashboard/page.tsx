@@ -44,6 +44,7 @@ export default function App() {
 
   const fetchData = async () => {
     setIsLoading(true);
+    setError(null);
     try {
       const [eventsRes, attendeesRes] = await Promise.all([
         fetch("/api/events"),
@@ -114,6 +115,29 @@ export default function App() {
     }
   };
 
+  const handleDeleteAttendee = async (attendeeId: number) => {
+    if (
+      window.confirm(
+        "¿Estás seguro de que quieres eliminar a este asistente?",
+      )
+    ) {
+      try {
+        const response = await fetch(`/api/attendees/${attendeeId}`, {
+          method: "DELETE",
+        });
+        if (!response.ok)
+          throw new Error("No se pudo eliminar al asistente");
+        await fetchData();
+      } catch (err) {
+        setError(
+          err instanceof Error
+            ? err.message
+            : "Error al eliminar al asistente",
+        );
+      }
+    }
+  };
+
   const handleViewEventDetails = (eventId: number) => {
     setViewingEventId(eventId);
   };
@@ -165,6 +189,7 @@ export default function App() {
             events={events}
             attendees={attendees}
             isLoading={isLoading}
+            onDelete={handleDeleteAttendee}
           />
         );
       default:
