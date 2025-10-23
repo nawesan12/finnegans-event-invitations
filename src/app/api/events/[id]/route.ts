@@ -17,11 +17,31 @@ const parseEventId = (id: string) => {
   return Number.isInteger(eventId) && eventId > 0 ? eventId : null;
 };
 
+type RouteContext = {
+  params?: Promise<Record<string, string | string[] | undefined>>;
+};
+
+const resolveEventId = async (
+  params?: Promise<Record<string, string | string[] | undefined>>,
+) => {
+  if (!params) {
+    return null;
+  }
+
+  const { id } = await params;
+
+  if (typeof id !== "string") {
+    return null;
+  }
+
+  return parseEventId(id);
+};
+
 export async function GET(
   _request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: RouteContext,
 ) {
-  const eventId = parseEventId(params.id);
+  const eventId = await resolveEventId(params);
 
   if (!eventId) {
     return NextResponse.json(
@@ -55,9 +75,9 @@ export async function GET(
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: RouteContext,
 ) {
-  const eventId = parseEventId(params.id);
+  const eventId = await resolveEventId(params);
 
   if (!eventId) {
     return NextResponse.json(
@@ -163,9 +183,9 @@ export async function PATCH(
 
 export async function DELETE(
   _request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: RouteContext,
 ) {
-  const eventId = parseEventId(params.id);
+  const eventId = await resolveEventId(params);
 
   if (!eventId) {
     return NextResponse.json(
