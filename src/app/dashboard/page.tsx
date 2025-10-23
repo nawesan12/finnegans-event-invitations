@@ -53,6 +53,7 @@ export default function App() {
         throw new Error("Falló la carga de datos");
       const eventsData = await eventsRes.json();
       const attendeesData = await attendeesRes.json();
+      setError(null);
       setEvents(eventsData);
       setAttendees(attendeesData);
     } catch (err) {
@@ -83,7 +84,7 @@ export default function App() {
   ) => {
     const method = eventToEdit ? "PATCH" : "POST";
     const url = eventToEdit
-      ? `/api/events?id=${eventToEdit.id}`
+      ? `/api/events/${eventToEdit.id}`
       : "/api/events";
     try {
       const response = await fetch(url, {
