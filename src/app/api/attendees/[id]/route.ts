@@ -3,33 +3,18 @@ import { Prisma } from "@prisma/client";
 import { db } from "@/lib/prisma";
 
 type RouteContext = {
-  params?: Promise<Record<string, string | string[] | undefined>>;
-};
-
-const resolveAttendeeId = async (
-  params?: Promise<Record<string, string | string[] | undefined>>,
-) => {
-  if (!params) {
-    return null;
-  }
-
-  const { id } = await params;
-
-  if (typeof id !== "string") {
-    return null;
-  }
-
-  const attendeeId = Number(id);
-  return Number.isInteger(attendeeId) ? attendeeId : null;
+  params: {
+    id: string;
+  };
 };
 
 export async function DELETE(
   _request: NextRequest,
   { params }: RouteContext,
 ) {
-  const attendeeId = await resolveAttendeeId(params);
+  const attendeeId = Number(params.id);
 
-  if (attendeeId === null) {
+  if (!Number.isInteger(attendeeId)) {
     return NextResponse.json(
       { message: "Invalid attendee id." },
       { status: 400 },
