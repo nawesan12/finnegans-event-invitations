@@ -2,28 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { Prisma } from "@prisma/client";
 import { db } from "@/lib/prisma";
 
-const resolveAttendeeId = async (
-  params?: Promise<Record<string, string | string[] | undefined>>,
-) => {
-  if (!params) {
-    return null;
-  }
-
-  const { id } = await params;
-
-  if (typeof id !== "string") {
-    return null;
-  }
-
-  const attendeeId = Number(id);
-  return Number.isInteger(attendeeId) ? attendeeId : null;
-};
-
 export async function DELETE(
   _request: NextRequest,
-  { params }: RouteContext<"/api/attendees/[id]">,
+  params: Promise<{ attendeeId: string }>,
 ) {
-  const attendeeId = await resolveAttendeeId(params);
+  const { attendeeId } = await params;
 
   if (attendeeId === null) {
     return NextResponse.json(
