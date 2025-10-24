@@ -17,10 +17,6 @@ const parseEventId = (id: string) => {
   return Number.isInteger(eventId) && eventId > 0 ? eventId : null;
 };
 
-type RouteContext = {
-  params?: Promise<Record<string, string | string[] | undefined>>;
-};
-
 const resolveEventId = async (
   params?: Promise<Record<string, string | string[] | undefined>>,
 ) => {
@@ -39,7 +35,7 @@ const resolveEventId = async (
 
 export async function GET(
   _request: NextRequest,
-  { params }: RouteContext,
+  { params }: RouteContext<"/api/events/[id]">,
 ) {
   const eventId = await resolveEventId(params);
 
@@ -75,7 +71,7 @@ export async function GET(
 
 export async function PATCH(
   request: NextRequest,
-  { params }: RouteContext,
+  { params }: RouteContext<"/api/events/[id]">,
 ) {
   const eventId = await resolveEventId(params);
 
@@ -183,7 +179,7 @@ export async function PATCH(
 
 export async function DELETE(
   _request: NextRequest,
-  { params }: RouteContext,
+  { params }: RouteContext<"/api/events/[id]">,
 ) {
   const eventId = await resolveEventId(params);
 
