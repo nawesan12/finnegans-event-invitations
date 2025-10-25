@@ -1,5 +1,5 @@
 import { db } from "@/lib/prisma";
-import { EventStatus } from "@prisma/client";
+import { EventStatus, Prisma } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
 const VALID_EVENT_STATUSES: EventStatus[] = [
@@ -88,6 +88,47 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(newEvent, { status: 201 });
   } catch (error) {
     console.error("POST Event API Error:", error);
+    return NextResponse.json(
+      { message: "An internal server error occurred." },
+      { status: 500 },
+    );
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const eventId = Number(body?.id);
+
+    if (!Number.isInteger(eventId) || eventId <= 0) {
+      return NextResponse.json(
+        { message: "A valid event id must be provided." },
+        { status: 400 },
+      );
+    }
+
+    await db.attendee.deleteMany({ where: { eventId } });
+
+    await db.event.delete({
+      where: { id: eventId },
+    });
+
+    return NextResponse.json(
+      { message: "Event deleted successfully." },
+      { status: 200 },
+    );
+  } catch (error) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2025"
+    ) {
+      return NextResponse.json(
+        { message: "Event not found." },
+        { status: 404 },
+      );
+    }
+
+    console.error("DELETE Event API Error:", error);
     return NextResponse.json(
       { message: "An internal server error occurred." },
       { status: 500 },
