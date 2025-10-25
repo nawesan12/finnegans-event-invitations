@@ -105,8 +105,10 @@ export default function App() {
   const handleDeleteEvent = async (eventId: number) => {
     if (window.confirm("¿Estás seguro de que quieres eliminar este evento?")) {
       try {
-        const response = await fetch(`/api/events/${eventId}`, {
+        const response = await fetch(`/api/events`, {
           method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: eventId }),
         });
         if (!response.ok) throw new Error("No se pudo eliminar el evento");
         await fetchData();
@@ -123,8 +125,10 @@ export default function App() {
       )
     ) {
       try {
-        const response = await fetch(`/api/attendees/${attendeeId}`, {
+        const response = await fetch(`/api/attendees`, {
           method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: attendeeId }),
         });
         if (!response.ok)
           throw new Error("No se pudo eliminar al asistente");
